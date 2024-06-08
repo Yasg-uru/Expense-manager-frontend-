@@ -1,0 +1,156 @@
+// // import { useState } from "react";
+// import { FaBars } from "react-icons/fa";
+// import { RxCross1 } from "react-icons/rx";
+// import { useNavigate } from "react-router-dom";
+// import React from "react"
+// const Home: React.FC<{children?:React.ReactNode}> = ({children}) => {
+//   const navigate = useNavigate();
+
+//   return (
+//     <>
+//       <div className="drawer">
+//         <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+//         <div className="drawer-content">
+//           {/* Page content here */}
+
+//             {children}
+
+//           <label htmlFor="my-drawer">
+//             <FaBars size={25} color="black" />
+//           </label>
+//         </div>
+//         <div className="drawer-side">
+//           <label
+//             htmlFor="my-drawer"
+//             aria-label="close sidebar"
+//             className="drawer-overlay"
+//           ></label>
+
+//           <ul className="menu p-4 w-80 min-h-full bg-black text-base-content">
+//             <label
+//               htmlFor="my-drawer"
+//               aria-label="close sidebar"
+//               className="drawer-overlay"
+//             >
+//               <RxCross1 color="white" size={25} className="close sidebar" />
+//             </label>
+//             <li>
+//               <a className="text-white">Home </a>
+//             </li>
+//             <li>
+//               <a className="text-white">create Expense</a>
+//             </li>
+//             <li>
+//               <a className="text-white">Create Budget </a>
+//             </li>
+//             <li>
+//               <a className="text-white">Get Expenses </a>
+//             </li>
+//             <div className="flex flex-col gap-2 h-11 w-full">
+//               <button
+//                 className="btn bg-red-500 "
+//                 onClick={() => {
+//                   navigate("/login");
+//                 }}
+//               >
+//                 Login
+//               </button>
+//               <button
+//                 className="btn bg-red-500 "
+//                 onClick={() => {
+//                   navigate("/register");
+//                 }}
+//               >
+//                 Signup
+//               </button>
+//             </div>
+//           </ul>
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
+// export default Home;
+import { useState } from "react";
+import { FaBars } from "react-icons/fa";
+import { RxCross1 } from "react-icons/rx";
+import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+
+const HomeWrapper: React.FC<{ children?: React.ReactNode }> = ({
+  children,
+}) => {
+  const navigate = useNavigate();
+
+  return (
+    <>
+      <div className="drawer">
+        <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+        <div className="drawer-content">
+          {/* Page content here */}
+          <label htmlFor="my-drawer">
+            <FaBars size={45} color="white" />
+          </label>
+          {children} {/* Render children prop here */}
+        </div>
+        <div className="drawer-side">
+          <label
+            htmlFor="my-drawer"
+            aria-label="close sidebar"
+            className="drawer-overlay"
+          ></label>
+
+          <ul className="menu p-4 w-80 min-h-full bg-black text-base-content ">
+            <label
+              htmlFor="my-drawer"
+              aria-label="close sidebar"
+              className="drawer-overlay"
+            >
+              <RxCross1 color="white" size={25} className="close sidebar" />
+            </label>
+            <li className="hover:bg-gradient-to-r from-green-500 to-indigo-500 ">
+              <Link to={`/`} className="text-white">
+                Home{" "}
+              </Link>
+            </li>
+            <li className="hover:bg-gradient-to-r from-green-500 to-indigo-500 ">
+              <Link to={`/create-expense`} className="text-white">
+                Create Expense
+              </Link>
+            </li>
+            <li className="hover:bg-gradient-to-r from-green-500 to-indigo-500 ">
+              <a className="text-white">Create Budget </a>
+            </li>
+            <li className="hover:bg-gradient-to-r from-green-500 to-indigo-500 ">
+              <Link to={`/getexpense`} className="text-white">
+                Get Expenses{" "}
+              </Link>
+            </li>
+            <div className="flex flex-col gap-2 h-11 w-full mt-5">
+              <button
+                className="btn bg-gradient-to-r from-green-500 to-indigo-500 hover:bg-gradient-to-l text-white font-bold py-2 px-6 rounded-full shadow-md"
+                onClick={() => {
+                  navigate("/login");
+                }}
+              >
+                Login
+              </button>
+              <button
+                className="btn bg-gradient-to-r from-green-500 to-indigo-500 hover:bg-gradient-to-l text-white font-bold py-2 px-6 rounded-full shadow-md"
+                onClick={() => {
+                  navigate("/register");
+                }}
+              >
+                Signup
+              </button>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default HomeWrapper;
+
+// Signup component
