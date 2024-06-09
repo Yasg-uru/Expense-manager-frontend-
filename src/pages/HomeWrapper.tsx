@@ -119,11 +119,18 @@ const HomeWrapper: React.FC<{ children?: React.ReactNode }> = ({
               </Link>
             </li>
             <li className="hover:bg-gradient-to-r from-green-500 to-indigo-500 ">
-              <a className="text-white">Create Budget </a>
+              <Link to={"/create-budget"} className="text-white">
+                Create Budget{" "}
+              </Link>
             </li>
             <li className="hover:bg-gradient-to-r from-green-500 to-indigo-500 ">
               <Link to={`/getexpense`} className="text-white">
                 Get Expenses{" "}
+              </Link>
+            </li>
+            <li className="hover:bg-gradient-to-r from-green-500 to-indigo-500 ">
+              <Link to={`/getbudgets`} className="text-white">
+                Get Budgets{" "}
               </Link>
             </li>
             <div className="flex flex-col gap-2 h-11 w-full mt-5">
