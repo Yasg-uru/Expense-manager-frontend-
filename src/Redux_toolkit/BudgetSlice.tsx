@@ -6,6 +6,8 @@ import BudgetSliceInterface from "../interfaces/BudgetsSliceInterface";
 const initialState: BudgetSliceInterface = {
   BudgetArray: [],
   Totalpages: 0,
+  RemainingBudget: 0,
+  PercentageUsage: 0,
 };
 export const createBudget = createAsyncThunk(
   "budget/create",
@@ -68,15 +70,35 @@ export const UpdateBudget = createAsyncThunk(
     }
   }
 );
+export const getprogress = createAsyncThunk(
+  "budget/progress",
+  async (formdata: { year: number; month: number; category: string }) => {
+    try {
+      console.log("this is a formdata:", formdata);
+      const res = await axiosInstance.post(`/budget/monthly`,formdata, {
+        withCredentials: true,
+      });
+      toast.success("fetched your budget usage successfully");
+      return res.data;
+    } catch (error) {
+      toast.error("failed to fetch your budget usage");
+    }
+  }
+);
 const BudgetSlice = createSlice({
   name: "budget",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(Getbudgets.fulfilled, (state, action) => {
-      state.BudgetArray = action?.payload?.Budgets;
-      state.Totalpages = action?.payload?.Totalpages;
-    });
+    builder
+      .addCase(Getbudgets.fulfilled, (state, action) => {
+        state.BudgetArray = action?.payload?.Budgets;
+        state.Totalpages = action?.payload?.Totalpages;
+      })
+      .addCase(getprogress.fulfilled, (state, action) => {
+        state.RemainingBudget = action?.payload?.remainingbudget;
+        state.PercentageUsage = action?.payload?.percentageUsage;
+      });
   },
 });
 export const {} = BudgetSlice.actions;

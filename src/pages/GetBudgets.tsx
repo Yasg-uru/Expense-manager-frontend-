@@ -5,13 +5,18 @@ import {
   DeleteBudget,
   Getbudgets,
   UpdateBudget,
+  getprogress,
 } from "../Redux_toolkit/BudgetSlice";
 import RootStateInterface from "../interfaces/RootStateInterface";
 
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 const GetBudgets: React.FC = () => {
   const [page, setPage] = useState<number>(1);
   const [editingBudget, setEditingBudget] = useState<string | null>(null);
   const [editedBudget, setEditedBudget] = useState<any>({});
+  const [ProgressCard, setProgressCard] = useState<string | null>(null);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -89,12 +94,20 @@ const GetBudgets: React.FC = () => {
     throw new Error("Function not implemented.");
   }
 
+  const RemainingBudget = useSelector<RootStateInterface>(
+    (state) => state.budget.RemainingBudget
+  );
+  const PercentageUsage =
+    useSelector<RootStateInterface>((state) => state.budget.PercentageUsage) ||
+    0;
+  console.log("this is a percentage usage:", PercentageUsage);
   return (
     <HomeWrapper>
-      <div className="bg-black min-h-screen flex flex-col p-2">
+      <div className="bg-black min-h-screen flex flex-col p-2 items-center">
         <h1 className="text-center text-2xl font-bold text-green-500">
           Get Your Budgets
         </h1>
+
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-3 ">
           {BudgetArray?.length > 0 &&
             BudgetArray.map((budget: any) => (
@@ -102,7 +115,33 @@ const GetBudgets: React.FC = () => {
                 key={budget._id}
                 className="relative bg-black h-[40vh] w-[30vw] m-3 rounded-lg shadow-lg shadow-indigo-300 overflow-hidden mx-auto flex flex-col items-center justify-center text-white p-2"
               >
-                {editingBudget === budget._id ? (
+                {ProgressCard === budget._id ? (
+                  <div className=" w-full flex flex-col items-center mb-10 pb-10 ">
+                    <button
+                      onClick={() => {
+                        setProgressCard(null);
+                      }}
+                      className="bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l text-white font-bold py-2 px-4 rounded-full shadow-md w-full mt-1 "
+                    >
+                      Back
+                    </button>
+                    <h1 className="text-white font-bold text-xl">
+                      {budget.category}
+                    </h1>
+                    <p className="text-red-500 font-bold">
+                      Limit: {budget.limit}
+                    </p>
+                    <p className="text-green-500 font-bold">
+                      Remaining Budget : {RemainingBudget}
+                    </p>
+                    <div className="h-[6vh] w-[10vw]">
+                      <CircularProgressbar
+                        value={PercentageUsage}
+                        text={`${PercentageUsage}%`}
+                      />
+                    </div>
+                  </div>
+                ) : editingBudget === budget._id ? (
                   <div className="h-full w-full flex flex-col gap-1">
                     <input
                       type="text"
@@ -165,23 +204,66 @@ const GetBudgets: React.FC = () => {
                     </div>
                   </div>
                 )}
-                <div className="absolute bottom-0 w-full border border-green-500 grid grid-cols-2">
-                  <button
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 shadow-md shadow-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                    onClick={() => handleDelete(budget._id)}
-                  >
-                    Delete
-                  </button>
-                  <button
-                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 shadow-md shadow-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                    onClick={() => handleUpdateClick(budget)}
-                  >
-                    {editingBudget === budget._id ? "Save" : "Update"}
-                  </button>
-                </div>
+                {ProgressCard !== budget._id && (
+                  <>
+                    <button
+                      onClick={() => {
+                        setProgressCard(
+                          ProgressCard === budget._id ? null : budget._id
+                        );
+                        dispatch(
+                          getprogress({
+                            year: budget.year,
+                            month: budget.month,
+                            category: budget.category,
+                          }) as any
+                        );
+                      }}
+                      className="bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l text-white font-bold py-2 px-4 rounded-full shadow-md w-full mt-1 "
+                    >
+                      Progress
+                    </button>
+
+                    <div className="absolute bottom-0 w-full border border-green-500 grid grid-cols-2">
+                      <button
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 shadow-md shadow-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                        onClick={() => handleDelete(budget._id)}
+                      >
+                        Delete
+                      </button>
+                      <button
+                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 shadow-md shadow-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                        onClick={() => handleUpdateClick(budget)}
+                      >
+                        {editingBudget === budget._id ? "Save" : "Update"}
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             ))}
         </div>
+        {ProgressCard !== null && (
+          <div className="join mt-2 border border-green-500">
+            <button
+              onClick={handlePreviousPage}
+              disabled={page <= 1}
+              className="join-item btn bg-black text-white"
+            >
+              «
+            </button>
+            <button className="join-item btn bg-black text-white">
+              Page 22
+            </button>
+            <button
+              onClick={handleNextPage}
+              disabled={page === Totalpages}
+              className="join-item btn bg-black text-white"
+            >
+              »
+            </button>
+          </div>
+        )}
       </div>
     </HomeWrapper>
   );

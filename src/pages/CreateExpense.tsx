@@ -13,13 +13,20 @@ const CreateExpense: React.FC = () => {
     recurring: false,
     currency: "",
   });
+  const [ShowOtherCategory, setShowOtherCategory] = useState<boolean>(false);
 
   const handlechange = (event: any) => {
     const { name, value } = event.target;
-    setFormdata({
-      ...formData,
-      [name]: value,
-    });
+    if (name == "category" && value == "Other") {
+      setShowOtherCategory(true);
+    } else {
+      // setShowOtherCategory(false);
+
+      setFormdata({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handleSubmit = (event: any) => {
@@ -73,7 +80,7 @@ const CreateExpense: React.FC = () => {
               value={formData.category}
               onChange={handlechange}
               className="border w-full border-gray-700 rounded-md bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
-              required
+              // required
             >
               <option value="">Select a Category</option>
               <option value="Groceries">Groceries</option>
@@ -83,6 +90,24 @@ const CreateExpense: React.FC = () => {
               <option value="Other">Other</option>
             </select>
           </div>
+          {ShowOtherCategory && (
+            <div className="flex flex-col gap-2 w-full">
+              <label htmlFor="category" className="text-lg text-gray-300">
+                Another Category
+              </label>
+
+              <input
+                type="text"
+                id="anothercategory"
+                name="category"
+                value={formData.category}
+                onChange={handlechange}
+                placeholder="Enter the category"
+                className="border w-full border-gray-700 rounded-md bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
+                required
+              />
+            </div>
+          )}
 
           <div className="flex w-full flex-col gap-2">
             <label htmlFor="date" className="text-lg text-gray-300">

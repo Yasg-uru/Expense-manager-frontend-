@@ -12,4 +12,7 @@ interface Budget {
 export default interface BudgetSliceInterface {
   BudgetArray: Budget[];
   Totalpages:number;
+  RemainingBudget:number;
+  PercentageUsage:number;
+  
 }

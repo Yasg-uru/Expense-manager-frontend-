@@ -17,6 +17,9 @@ export const Createexpense = createAsyncThunk(
   "expense/create",
   async (FormData: CreateExpenseInterface) => {
     try {
+      console.log(
+      "this is formdata:",FormData
+      )
       const res = await axios.post(
         "http://localhost:8000/expense/create",
         FormData,
