@@ -46,7 +46,7 @@ const CreateExpense: React.FC = () => {
       <div className="h-screen flex justify-center items-center bg-black">
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col w-[60vw]  gap-4 justify-center items-center text-white p-8 rounded-lg shadow-lg bg-black border-2 border-green-500"
+          className="flex flex-col w-full  gap-4 justify-center items-center text-white p-8 rounded-lg shadow-lg bg-black border-2 border-green-500 max-w-sm"
         >
           <h1 className="text-3xl font-bold text-center mb-6 text-green-500">
             Create Expense
