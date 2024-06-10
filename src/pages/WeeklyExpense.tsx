@@ -84,7 +84,7 @@ const WeeklyExpense: React.FC = () => {
       <h1 className="text-center text-green-500 font-bold text-3xl">
         Get Weekly Expense
       </h1>
-      <div className="flex gap-4 ">
+      <div className="flex flex-col sm:flex-row gap-4 ">
         <button
           onClick={() => handleSubmit(1)}
           className="btn bg-gradient-to-r from-green-500 to-indigo-500 hover:bg-gradient-to-l text-white font-bold py-2 px-4 rounded-full shadow-md "

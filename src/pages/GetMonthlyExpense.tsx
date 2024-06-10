@@ -72,7 +72,7 @@ const GetMonthlyExpense: React.FC = () => {
       <h1 className="text-center text-green-500 font-bold text-3xl">
         Get Monthly Expense
       </h1>
-      <div className="w-full flex items-center border border-red-500 gap-4 px-10">
+      {/* <div className="w-full flex flex-col sm:flex-row items-center border border-red-500 gap-4 px-10">
         <div className="flex flex-col items-start m-4">
           <label
             htmlFor="month-dropdown"
@@ -122,7 +122,53 @@ const GetMonthlyExpense: React.FC = () => {
             Search
           </button>
         </div>
+      </div> */}
+      <div className="w-full flex flex-col sm:flex-row items-center border border-red-500 gap-4 px-4 sm:px-10">
+        <div className="flex flex-col items-start m-2 sm:m-4">
+          <label
+            htmlFor="month-dropdown"
+            className="mb-2 text-lg font-medium text-white"
+          >
+            Select a Month:
+          </label>
+          <select
+            id="month-dropdown"
+            name="month"
+            className="w-full sm:w-[15vw] p-2 text-white border border-gray-300 rounded-md bg-black focus:outline-none focus:border-gray-500 transition-all duration-300 cursor-pointer"
+          >
+            <option value="" disabled>
+              Select a month
+            </option>
+            {months.map((month) => (
+              <option key={month.value} value={month.value}>
+                {month.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex flex-col gap-2 w-full sm:w-auto">
+          <label htmlFor="year" className="text-lg text-gray-300">
+            Year
+          </label>
+          <input
+            type="text"
+            id="amount"
+            name="year"
+            placeholder="Enter the amount"
+            className="border w-full sm:w-[15vw] text-white border-gray-700 rounded-md bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
+            required
+          />
+        </div>
+        <div className="flex flex-col w-full gap-2 m-2 sm:m-4">
+          <button
+            onClick={handlesearch}
+            className="btn w-full bg-gradient-to-r from-green-500 to-indigo-500 hover:bg-gradient-to-l text-white font-bold py-2 px-4 rounded-full shadow-md"
+          >
+            Search
+          </button>
+        </div>
       </div>
+
       <div className="flex mt-12 flex-col gap-1">
         {expenseArray?.map((expense: any) => (
           <ExpenseCard key={expense._id} expense={expense} />
