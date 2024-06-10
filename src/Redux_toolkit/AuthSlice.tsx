@@ -4,6 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import signupinterface from "../interfaces/AuthenticationInterface";
 import LoginInterface from "../interfaces/LoginInterface";
+import axiosInstance from "../helpers/axiosinstance";
 const initialState: User = {
   role: "",
   isLoggedin: localStorage.getItem("isLoggedin") === "true" || false,
@@ -44,6 +45,66 @@ export const login = createAsyncThunk(
     }
   }
 );
+export const Logout = createAsyncThunk("auth/logout", async () => {
+  try {
+    const res = await axiosInstance.post(
+      "/user/logout",
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    toast.success("logged out successfully");
+    return res.data;
+  } catch (error) {
+    toast.error("failed to Logout ");
+  }
+});
+export const UpdatePassword = createAsyncThunk(
+  "/auth/updatepassword",
+  async (formdata: { currentpassword: string; updatepassword: string }) => {
+    try {
+      const res = axiosInstance.put("/user/updatepassword", formdata, {
+        withCredentials: true,
+      });
+      toast.success("password updated successfully");
+      return (await res).data;
+    } catch (error) {
+      toast.error("failed to update password");
+    }
+  }
+);
+export const forgotpassword = createAsyncThunk(
+  "/user/forgotpassword",
+  async (email: string) => {
+    try {
+      const res = await axiosInstance.post(
+        "/user/forgotpassword",
+        {
+          email,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      toast.success("mail sent successfully");
+      return res.data;
+    } catch (error) {
+      toast.error("failed to sent mail ");
+    }
+  }
+);
+export const ResetPassword = createAsyncThunk("/user/reset", async () => {
+  try {
+    const res = await axiosInstance.post("/user/resetpassword", FormData, {
+      withCredentials: true,
+    });
+    toast.success("reset password successfully");
+    return res.data;
+  } catch (error) {
+    toast.error("failed to reset password");
+  }
+});
 const AuthSlice = createSlice({
   name: "auth",
   initialState,
@@ -58,6 +119,10 @@ const AuthSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         (state.isLoggedin = true), localStorage.setItem("isLoggedin", "true");
         state.role = action?.payload?.user?.role;
+      })
+      .addCase(Logout.fulfilled, (state, action) => {
+        state.isLoggedin = false;
+        localStorage.setItem("isLoggedin", "false");
       });
   },
 });
