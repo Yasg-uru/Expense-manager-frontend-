@@ -1,4 +1,4 @@
-import { useDebugValue, useState } from "react";
+import { useState } from "react";
 import CreateBudgetInterface from "../../interfaces/CreateBudgetInterface";
 import HomeWrapper from "../HomeWrapper";
 import { useDispatch } from "react-redux";
@@ -54,7 +54,7 @@ const CreateBudget: React.FC = () => {
       <div className="bg-black min-h-screen w-full flex flex-col items-center justify-center">
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-2 p-4 border w-[40vw] rounded-lg shadow-2xl shadow-green-500 "
+          className="flex flex-col gap-2 p-3 border w-full rounded-lg shadow-2xl shadow-green-500 max-w-sm "
         >
           <h1 className="text-center text-green-500 font-bold text-2xl">
             Create Budget Form
