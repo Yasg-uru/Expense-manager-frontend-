@@ -94,17 +94,26 @@ export const forgotpassword = createAsyncThunk(
     }
   }
 );
-export const ResetPassword = createAsyncThunk("/user/reset", async () => {
-  try {
-    const res = await axiosInstance.post("/user/resetpassword", FormData, {
-      withCredentials: true,
-    });
-    toast.success("reset password successfully");
-    return res.data;
-  } catch (error) {
-    toast.error("failed to reset password");
+export const ResetPassword = createAsyncThunk(
+  "/user/reset",
+  async (formdata: { token: string | undefined; Password: string }) => {
+    try {
+      const res = await axiosInstance.post(
+        `/user/resetpassword/${formdata.token}`,
+        {
+          password: formdata.Password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      toast.success("reset password successfully");
+      return res.data;
+    } catch (error) {
+      toast.error("failed to reset password");
+    }
   }
-});
+);
 const AuthSlice = createSlice({
   name: "auth",
   initialState,

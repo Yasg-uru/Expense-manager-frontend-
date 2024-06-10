@@ -147,7 +147,7 @@ const HomeWrapper: React.FC<{ children?: React.ReactNode }> = ({
               </Link>
             </li>
 
-            {isLoggedIn === true ? (
+            {isLoggedIn === false ? (
               <div className="flex flex-col gap-2 h-11 w-full mt-5">
                 <button
                   className="btn bg-gradient-to-r from-green-500 to-indigo-500 hover:bg-gradient-to-l text-white font-bold py-2 px-6 rounded-full shadow-md"
