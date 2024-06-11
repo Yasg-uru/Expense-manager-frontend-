@@ -4,6 +4,7 @@ import signupinterface from "../interfaces/AuthenticationInterface";
 import { useDispatch } from "react-redux";
 import { register } from "../Redux_toolkit/AuthSlice";
 import { useNavigate } from "react-router-dom";
+import { BsPersonCircle } from "react-icons/bs";
 
 const Signup: React.FC = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,9 @@ const Signup: React.FC = () => {
     name: "",
     email: "",
     password: "",
+    profileurl: "",
   });
+  const [previewimage, setpreviewimage] = useState<string | null>("");
 
   const HandleFormDataEntry = (event: any) => {
     const { name, value } = event.target;
@@ -28,7 +31,21 @@ const Signup: React.FC = () => {
     dispatch(register(formData) as any);
     navigate("/");
   };
-
+  function getimage(e: any) {
+    e.preventDefault();
+    let uploadimage = e.target.files[0];
+    if (uploadimage) {
+      setFormData({
+        ...formData,
+        profileurl: uploadimage,
+      });
+    }
+    const filereader = new FileReader();
+    filereader.readAsDataURL(uploadimage);
+    filereader.addEventListener("load", function () {
+      setpreviewimage(this.result as string);
+    });
+  }
   return (
     <HomeWrapper>
       <div className="h-screen flex justify-center items-center bg-black">
@@ -39,6 +56,25 @@ const Signup: React.FC = () => {
           <h1 className="text-3xl font-bold text-center mb-6 text-green-500">
             Signup Form
           </h1>
+          <label htmlFor="image_uploads" className="cursor-pointer">
+            {previewimage ? (
+              <img
+                className="h-24 w-24 rounded-full mx-auto"
+                src={previewimage}
+                alt="preview image"
+              />
+            ) : (
+              <BsPersonCircle className=" h-24 w-24 rounded-full mx-auto text-white" />
+            )}
+          </label>
+          <input
+            onChange={getimage}
+            className="hidden"
+            // value={formdata.profile}
+            type="file"
+            id="image_uploads"
+            name="profileurl"
+          />
           <div className="flex flex-col gap-2">
             <label htmlFor="name" className="text-lg text-gray-300">
               Name

@@ -92,6 +92,9 @@ const HomeWrapper: React.FC<{ children?: React.ReactNode }> = ({
   const HandleLogout = () => {
     dispatch(Logout() as any);
   };
+  const imageurl = useSelector<RootStateInterface>(
+    (state) => state.auth.imageurl
+  ) as string;
   console.log("this is a is loggedin:", isLoggedIn);
 
   return (
@@ -174,10 +177,14 @@ const HomeWrapper: React.FC<{ children?: React.ReactNode }> = ({
                   className="btn btn-ghost btn-circle avatar"
                 >
                   <div className="w-10 rounded-full">
-                    <img
-                      alt="Tailwind CSS Navbar component"
-                      src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                    />
+                    {imageurl ? (
+                      <img alt="nothing" src={imageurl} />
+                    ) : (
+                      <img
+                        alt="Tailwind CSS Navbar component"
+                        src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                      />
+                    )}
                   </div>
                 </div>
                 <ul

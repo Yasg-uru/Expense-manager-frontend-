@@ -8,22 +8,60 @@ import axiosInstance from "../helpers/axiosinstance";
 const initialState: User = {
   role: "",
   isLoggedin: localStorage.getItem("isLoggedin") === "true" || false,
+  imageurl: "",
 };
+// export const register = createAsyncThunk(
+//   "/auth/register",
+//   async (formdata: signupinterface) => {
+//     try {
+//       console.log('this is a formdata ',formdata)
+//       const res = await axios.post(
+//         `http://localhost:8000/user/register`,
+//         formdata,
+//         {
+//           withCredentials: true,
+//         }
+//       );
+//       toast.success("your account created successfully");
+//       return res.data;
+//     } catch (error) {
+//       toast.error("error is occured");
+//     }
+//   }
+// );
 export const register = createAsyncThunk(
   "/auth/register",
   async (formdata: signupinterface) => {
     try {
+      const formData = new FormData(); // Create a FormData object
+
+      // Add each form data property to the FormData object
+      for (const key in formdata) {
+        formData.append(key, formdata[key]);
+      }
+
+      // Optionally add files (if your signup form includes file uploads):
+      if (formdata.file) { // Assuming you have a 'file' property for uploads
+        formData.append("profileurl", formdata.file, formdata.file.name); // Add file data
+      }
+
       const res = await axios.post(
         `http://localhost:8000/user/register`,
-        formdata,
+        formData,
         {
           withCredentials: true,
+          headers: {
+            // Set appropriate headers for multipart form data (optional)
+            "Content-Type": `multipart/form-data;`, // Set Content-Type header with boundary
+          },
         }
       );
-      toast.success("your account created successfully");
+
+      toast.success("Your account created successfully");
       return res.data;
     } catch (error) {
-      toast.error("error is occured");
+      toast.error("An error occurred");
+      console.error(error); // Log the error for debugging
     }
   }
 );
@@ -124,10 +162,12 @@ const AuthSlice = createSlice({
         state.role = action?.payload?.user?.role;
         localStorage.setItem("isLoggedin", "true");
         state.isLoggedin = true;
+        state.imageurl = action?.payload?.user?.profileurl;
       })
       .addCase(login.fulfilled, (state, action) => {
         (state.isLoggedin = true), localStorage.setItem("isLoggedin", "true");
         state.role = action?.payload?.user?.role;
+        state.imageurl = action?.payload?.user?.profileurl;
       })
       .addCase(Logout.fulfilled, (state, action) => {
         state.isLoggedin = false;
