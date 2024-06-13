@@ -71,14 +71,14 @@
 //   );
 // };
 // export default Home;
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import RootStateInterface from "../interfaces/RootStateInterface";
-import { Logout } from "../Redux_toolkit/AuthSlice";
+import { GetUserInfo, Logout } from "../Redux_toolkit/AuthSlice";
 
 const HomeWrapper: React.FC<{ children?: React.ReactNode }> = ({
   children,
@@ -96,7 +96,9 @@ const HomeWrapper: React.FC<{ children?: React.ReactNode }> = ({
     (state) => state.auth.imageurl
   ) as string;
   console.log("this is a is loggedin:", isLoggedIn);
-
+useEffect(()=>{
+dispatch(GetUserInfo() as any);
+},[imageurl]);
   return (
     <>
       <div className="drawer">
@@ -192,7 +194,12 @@ const HomeWrapper: React.FC<{ children?: React.ReactNode }> = ({
                   className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-black text-white border border-green-500 rounded-box w-52"
                 >
                   <li>
-                    <a className="justify-between">
+                    <a
+                      onClick={() => {
+                        navigate("/profile");
+                      }}
+                      className="justify-between"
+                    >
                       Profile
                       <span className="badge">New</span>
                     </a>

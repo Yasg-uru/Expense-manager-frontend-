@@ -10,6 +10,7 @@ import GetBudgets from "./pages/GetBudgets";
 import { ResetPassword } from "./Redux_toolkit/AuthSlice";
 import ResetPasswordForm from "./pages/ResetPasswordForm";
 import ProtectedHelper from "./helpers/ProtectedHelper";
+import ProfileInfo from "./pages/ProfileInfo";
 function App() {
   return (
     <>
@@ -23,6 +24,7 @@ function App() {
         <Route path="/getexpense" element={<GetExpenseDetails />} />
         <Route path="/create-budget" element={<CreateBudget />} />
         <Route path="getbudgets" element={<GetBudgets />} />
+        <Route path="/profile" element={<ProfileInfo/>}/>
         </Route>
       </Routes>
     </>

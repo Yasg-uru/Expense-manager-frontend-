@@ -9,6 +9,8 @@ const initialState: User = {
   role: "",
   isLoggedin: localStorage.getItem("isLoggedin") === "true" || false,
   imageurl: "",
+  email: "",
+  name: "",
 };
 // export const register = createAsyncThunk(
 //   "/auth/register",
@@ -41,7 +43,8 @@ export const register = createAsyncThunk(
       }
 
       // Optionally add files (if your signup form includes file uploads):
-      if (formdata.file) { // Assuming you have a 'file' property for uploads
+      if (formdata.file) {
+        // Assuming you have a 'file' property for uploads
         formData.append("profileurl", formdata.file, formdata.file.name); // Add file data
       }
 
@@ -152,6 +155,65 @@ export const ResetPassword = createAsyncThunk(
     }
   }
 );
+export const Profilechange = createAsyncThunk(
+  "auth/profilechange",
+  async (profileurl: File) => {
+    try {
+      const Formdata = new FormData();
+      Formdata.append("profileurl", profileurl);
+
+      const res = await axiosInstance.put("/user/changeProfile", Formdata, {
+        withCredentials: true,
+      });
+      toast.success("changed your profile successfully");
+      return res.data;
+    } catch (error) {
+      toast.error("failed to change profile picture ");
+    }
+  }
+);
+export const DeleteAccount = createAsyncThunk("user/delete", async () => {
+  try {
+    const res = await axiosInstance.delete(`/user/delete`, {
+      withCredentials: true,
+    });
+    toast.success("Your Account deleted successfully");
+    return res.data;
+  } catch (error) {
+    toast.error("failed to delete Account");
+  }
+});
+export const UpdateProfile = createAsyncThunk(
+  "/user/update",
+  async (name: string) => {
+    try {
+      const res = await axiosInstance.put(
+        "/user/update",
+        {
+          name,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      toast.success("updated your profile successfully");
+      return res.data;
+    } catch (error) {
+      toast.error("failed to update profile");
+    }
+  }
+);
+export const GetUserInfo = createAsyncThunk("/user/getinfo", async () => {
+  try {
+    const res = await axiosInstance.get("/user/userInfo", {
+      withCredentials: true,
+    });
+    toast.success("successfully fecthed users data ");
+    return res.data;
+  } catch (error) {
+    toast.error("failed to fecth users data ");
+  }
+});
 const AuthSlice = createSlice({
   name: "auth",
   initialState,
@@ -163,16 +225,47 @@ const AuthSlice = createSlice({
         localStorage.setItem("isLoggedin", "true");
         state.isLoggedin = true;
         state.imageurl = action?.payload?.user?.profileurl;
+        state.email = action?.payload?.user?.email;
+        state.name = action?.payload?.user?.name;
       })
       .addCase(login.fulfilled, (state, action) => {
         (state.isLoggedin = true), localStorage.setItem("isLoggedin", "true");
         state.role = action?.payload?.user?.role;
         state.imageurl = action?.payload?.user?.profileurl;
+        state.email = action?.payload?.user?.email;
+        state.name = action?.payload?.user?.name;
       })
-      .addCase(Logout.fulfilled, (state, action) => {
+      .addCase(Logout.fulfilled, (state) => {
         state.isLoggedin = false;
         localStorage.setItem("isLoggedin", "false");
-      });
+      })
+      .addCase(Profilechange.fulfilled, (state, action) => {
+        state.imageurl = action?.payload?.user?.profileurl;
+      })
+      .addCase(DeleteAccount.fulfilled, (state, action) => {
+        state.role = "";
+        localStorage.clear();
+        state.isLoggedin = false;
+        state.imageurl = "";
+        state.email = "";
+        state.name = "";
+      })
+      .addCase(UpdateProfile.fulfilled, (state, action) => {
+        state.role = action?.payload?.user?.role;
+        localStorage.setItem("isLoggedin", "true");
+        state.isLoggedin = true;
+        state.imageurl = action?.payload?.user?.profileurl;
+        state.email = action?.payload?.user?.email;
+        state.name = action?.payload?.user?.name;
+      })
+      .addCase(GetUserInfo.fulfilled,(state,action)=>{
+        state.role = action?.payload?.user?.role;
+        localStorage.setItem("isLoggedin", "true");
+        state.isLoggedin = true;
+        state.imageurl = action?.payload?.user?.profileurl;
+        state.email = action?.payload?.user?.email;
+        state.name = action?.payload?.user?.name;
+      })
   },
 });
 export const {} = AuthSlice.actions;
