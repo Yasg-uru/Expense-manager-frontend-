@@ -3,7 +3,7 @@ import HomeWrapper from "./HomeWrapper";
 import RootStateInterface from "../interfaces/RootStateInterface";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { User } from "../interfaces/AuthSlice";
-import { ReactElement, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DeleteAccount,
   GetUserInfo,
@@ -22,7 +22,7 @@ const ProfileInfo: React.FC = () => {
   const [Lastname, setLastname] = useState<string>(nameArr[1]);
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
   const updateprofile = () => {
-    const name = Firstname + Lastname;
+    const name = Firstname + " " + Lastname;
 
     dispatch(UpdateProfile(name) as any);
   };

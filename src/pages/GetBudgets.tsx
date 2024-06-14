@@ -90,9 +90,7 @@ const GetBudgets: React.FC = () => {
     }));
   }
 
-  function handleChange(event: React.ChangeEvent<HTMLSelectElement>): void {
-    throw new Error("Function not implemented.");
-  }
+  
 
   const RemainingBudget = useSelector<RootStateInterface>(
     (state) => state.budget.RemainingBudget

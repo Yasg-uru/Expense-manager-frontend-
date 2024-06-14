@@ -1,21 +1,21 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
- 
-  Getmonthly_Expense_Graph,
-} from "../Redux_toolkit/ExpenseSlice";
+import { Getmonthly_Expense_Graph } from "../Redux_toolkit/ExpenseSlice";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 interface Props {
-  month: number ;
-  year: number ;
-  Totalexpense:number;
-
+  month: number;
+  year: number;
+  Totalexpense: number;
 }
 
-const GetfullmonthlyReportByGraph: React.FC<Props> = ({ month, year ,Totalexpense}) => {
+const GetfullmonthlyReportByGraph: React.FC<Props> = ({
+  month,
+  year,
+  Totalexpense,
+}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -47,12 +47,15 @@ const GetfullmonthlyReportByGraph: React.FC<Props> = ({ month, year ,Totalexpens
       },
     ],
   };
-  return <>
-  <div className="min-h-screen flex flex-col mt-4">
-      <p className="text-green-500 ">
-        Total Expense of {month}th month {year} is ₹{Totalexpense}
-      </p>
-      <Pie data={chartData} />
-    </div></>;
+  return (
+    <>
+      <div className="min-h-screen flex flex-col mt-4">
+        <p className="text-green-500 ">
+          Total Expense of {month}th month {year} is ₹{Totalexpense}
+        </p>
+        <Pie data={chartData} />
+      </div>
+    </>
+  );
 };
 export default GetfullmonthlyReportByGraph;

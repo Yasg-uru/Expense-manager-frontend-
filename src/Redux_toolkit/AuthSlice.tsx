@@ -5,9 +5,13 @@ import toast from "react-hot-toast";
 import signupinterface from "../interfaces/AuthenticationInterface";
 import LoginInterface from "../interfaces/LoginInterface";
 import axiosInstance from "../helpers/axiosinstance";
+const isValidRole = (role: any): role is "" | "admin" | "user" => {
+  return role === "" || role === "admin" || role === "user";
+};
+const storedRole = localStorage.getItem("role");
 const initialState: User = {
-  role: "",
-  isLoggedin: localStorage.getItem("isLoggedin") === "true" || false,
+  role: isValidRole(storedRole) ? storedRole : "",
+  isLoggedin: localStorage.getItem("isLoggedin") === "true" ? true : false,
   imageurl: "",
   email: "",
   name: "",
@@ -223,6 +227,7 @@ const AuthSlice = createSlice({
       .addCase(register.fulfilled, (state, action) => {
         state.role = action?.payload?.user?.role;
         localStorage.setItem("isLoggedin", "true");
+        localStorage.setItem("role", action?.payload?.user?.role);
         state.isLoggedin = true;
         state.imageurl = action?.payload?.user?.profileurl;
         state.email = action?.payload?.user?.email;
@@ -231,18 +236,27 @@ const AuthSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         (state.isLoggedin = true), localStorage.setItem("isLoggedin", "true");
         state.role = action?.payload?.user?.role;
+        localStorage.setItem("role", action?.payload?.user?.role);
         state.imageurl = action?.payload?.user?.profileurl;
         state.email = action?.payload?.user?.email;
         state.name = action?.payload?.user?.name;
       })
+      .addCase(login.rejected, (state) => {
+        state.isLoggedin = false;
+        localStorage.setItem("isLoggedin", "false");
+        localStorage.setItem("role", "");
+        state.role = "";
+      })
       .addCase(Logout.fulfilled, (state) => {
         state.isLoggedin = false;
         localStorage.setItem("isLoggedin", "false");
+        localStorage.setItem("role", "");
+        state.role = "";
       })
       .addCase(Profilechange.fulfilled, (state, action) => {
         state.imageurl = action?.payload?.user?.profileurl;
       })
-      .addCase(DeleteAccount.fulfilled, (state, action) => {
+      .addCase(DeleteAccount.fulfilled, (state) => {
         state.role = "";
         localStorage.clear();
         state.isLoggedin = false;
@@ -252,20 +266,22 @@ const AuthSlice = createSlice({
       })
       .addCase(UpdateProfile.fulfilled, (state, action) => {
         state.role = action?.payload?.user?.role;
+        localStorage.setItem("role", action?.payload?.user?.role);
         localStorage.setItem("isLoggedin", "true");
         state.isLoggedin = true;
         state.imageurl = action?.payload?.user?.profileurl;
         state.email = action?.payload?.user?.email;
         state.name = action?.payload?.user?.name;
       })
-      .addCase(GetUserInfo.fulfilled,(state,action)=>{
+      .addCase(GetUserInfo.fulfilled, (state, action) => {
         state.role = action?.payload?.user?.role;
+        localStorage.setItem("role", action?.payload?.user?.role);
         localStorage.setItem("isLoggedin", "true");
         state.isLoggedin = true;
         state.imageurl = action?.payload?.user?.profileurl;
         state.email = action?.payload?.user?.email;
         state.name = action?.payload?.user?.name;
-      })
+      });
   },
 });
 export const {} = AuthSlice.actions;

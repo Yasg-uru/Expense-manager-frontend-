@@ -9,7 +9,7 @@ function ProtectedHelper({ allowedrole }: Props) {
   const location = useLocation();
   const isLoggedIn = useSelector<RootStateInterface>(
     (state) => state.auth.isLoggedin
-  ) as string;
+  ) as boolean;
   const role = useSelector<RootStateInterface>(
     (state) => state.auth.role
   ) as string;

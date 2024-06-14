@@ -1,20 +1,3 @@
-// import React from "react";
-// import HomeWrapper from "./HomeWrapper";
-
-// const Home: React.FC = () => {
-//   return (
-//     <HomeWrapper>
-//       <div className="min-h-screen  bg-black text-white flex flex-col items-center justify-center">
-//         <div className="flex flex-col gap-2">
-//           <h1 className="text-green-500 font-bold text-3xl ">Welcome to our Expense Management Website</h1>
-//         </div>
-//       </div>
-//     </HomeWrapper>
-//   );
-// };
-
-// export default Home;
-
 import React from "react";
 import HomeWrapper from "./HomeWrapper";
 import ExpenseTrackImage from "../assets/expense_tracking.jpg";

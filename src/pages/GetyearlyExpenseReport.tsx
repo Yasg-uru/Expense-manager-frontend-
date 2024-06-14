@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetFullYearReport } from "../Redux_toolkit/ExpenseSlice";
 import RootStateInterface from "../interfaces/RootStateInterface";
@@ -11,7 +11,7 @@ const GetYearlyExpenseReport: React.FC = () => {
 
   const currentyear = new Date();
   const [year, setyear] = useState<number>(currentyear.getFullYear());
-  const [choice, setChoice] = useState<"Pie" | "Bar" | "default">("default");
+  // const [choice, setChoice] = useState<"Pie" | "Bar" | "default">("default");
   const toggleOpen = () => {
     setisopen(!isopen);
   };

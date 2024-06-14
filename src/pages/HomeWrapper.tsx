@@ -1,77 +1,4 @@
-// // import { useState } from "react";
-// import { FaBars } from "react-icons/fa";
-// import { RxCross1 } from "react-icons/rx";
-// import { useNavigate } from "react-router-dom";
-// import React from "react"
-// const Home: React.FC<{children?:React.ReactNode}> = ({children}) => {
-//   const navigate = useNavigate();
-
-//   return (
-//     <>
-//       <div className="drawer">
-//         <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-//         <div className="drawer-content">
-//           {/* Page content here */}
-
-//             {children}
-
-//           <label htmlFor="my-drawer">
-//             <FaBars size={25} color="black" />
-//           </label>
-//         </div>
-//         <div className="drawer-side">
-//           <label
-//             htmlFor="my-drawer"
-//             aria-label="close sidebar"
-//             className="drawer-overlay"
-//           ></label>
-
-//           <ul className="menu p-4 w-80 min-h-full bg-black text-base-content">
-//             <label
-//               htmlFor="my-drawer"
-//               aria-label="close sidebar"
-//               className="drawer-overlay"
-//             >
-//               <RxCross1 color="white" size={25} className="close sidebar" />
-//             </label>
-//             <li>
-//               <a className="text-white">Home </a>
-//             </li>
-//             <li>
-//               <a className="text-white">create Expense</a>
-//             </li>
-//             <li>
-//               <a className="text-white">Create Budget </a>
-//             </li>
-//             <li>
-//               <a className="text-white">Get Expenses </a>
-//             </li>
-//             <div className="flex flex-col gap-2 h-11 w-full">
-//               <button
-//                 className="btn bg-red-500 "
-//                 onClick={() => {
-//                   navigate("/login");
-//                 }}
-//               >
-//                 Login
-//               </button>
-//               <button
-//                 className="btn bg-red-500 "
-//                 onClick={() => {
-//                   navigate("/register");
-//                 }}
-//               >
-//                 Signup
-//               </button>
-//             </div>
-//           </ul>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-// export default Home;
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FaBars } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
@@ -96,9 +23,9 @@ const HomeWrapper: React.FC<{ children?: React.ReactNode }> = ({
     (state) => state.auth.imageurl
   ) as string;
   console.log("this is a is loggedin:", isLoggedIn);
-useEffect(()=>{
-dispatch(GetUserInfo() as any);
-},[imageurl]);
+  useEffect(() => {
+    dispatch(GetUserInfo() as any);
+  }, [imageurl]);
   return (
     <>
       <div className="drawer">

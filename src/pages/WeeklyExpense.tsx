@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetweeklyExpense } from "../Redux_toolkit/ExpenseSlice";
 import RootStateInterface from "../interfaces/RootStateInterface";
 import toast from "react-hot-toast";
-import { Bar } from "react-chartjs-2";
 
 import {
   Chart as ChartJS,
@@ -64,19 +63,6 @@ const WeeklyExpense: React.FC = () => {
   const handleSubmit = (weekNumber: number) => {
     setWeek(weekNumber);
     setcurrentpage(1);
-  };
-
-  const chartData = {
-    labels: expenseArray?.map((expense: any) => expense?.category),
-    datasets: [
-      {
-        label: "Amount",
-        data: expenseArray?.map((expense: any) => expense?.amount),
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-      },
-    ],
   };
 
   return (

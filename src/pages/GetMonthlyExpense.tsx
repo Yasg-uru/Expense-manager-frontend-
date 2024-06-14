@@ -134,6 +134,7 @@ const GetMonthlyExpense: React.FC = () => {
           <select
             id="month-dropdown"
             name="month"
+            onChange={handlechange}
             className="w-full sm:w-[15vw] p-2 text-white border border-gray-300 rounded-md bg-black focus:outline-none focus:border-gray-500 transition-all duration-300 cursor-pointer"
           >
             <option value="" disabled>
@@ -154,6 +155,7 @@ const GetMonthlyExpense: React.FC = () => {
             type="text"
             id="amount"
             name="year"
+            onChange={handlechange}
             placeholder="Enter the amount"
             className="border w-full sm:w-[15vw] text-white border-gray-700 rounded-md bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
             required
