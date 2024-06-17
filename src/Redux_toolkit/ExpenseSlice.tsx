@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+
 import ExpenseInterface from "../interfaces/ExpenseSliceInterface";
 import toast from "react-hot-toast";
 import CreateExpenseInterface from "../interfaces/CreateExpenseInterface";
