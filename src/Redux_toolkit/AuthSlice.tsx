@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User } from "../interfaces/AuthSlice";
-import axios from "axios";
+
 import toast from "react-hot-toast";
 import signupinterface from "../interfaces/AuthenticationInterface";
 import LoginInterface from "../interfaces/LoginInterface";
@@ -52,17 +52,13 @@ export const register = createAsyncThunk(
         formData.append("profileurl", formdata.file, formdata.file.name); // Add file data
       }
 
-      const res = await axios.post(
-        `http://localhost:8000/user/register`,
-        formData,
-        {
-          withCredentials: true,
-          headers: {
-            // Set appropriate headers for multipart form data (optional)
-            "Content-Type": `multipart/form-data;`, // Set Content-Type header with boundary
-          },
-        }
-      );
+      const res = await axiosInstance.post(`/user/register`, formData, {
+        withCredentials: true,
+        headers: {
+          // Set appropriate headers for multipart form data (optional)
+          "Content-Type": `multipart/form-data;`, // Set Content-Type header with boundary
+        },
+      });
 
       toast.success("Your account created successfully");
       return res.data;
@@ -76,13 +72,9 @@ export const login = createAsyncThunk(
   "/auth/login",
   async (formdata: LoginInterface) => {
     try {
-      const res = await axios.post(
-        "http://localhost:8000/user/login",
-        formdata,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axiosInstance.post("/user/login", formdata, {
+        withCredentials: true,
+      });
       toast.success("Logged In successfully");
       return res.data;
     } catch (error) {

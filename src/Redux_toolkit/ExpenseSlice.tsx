@@ -6,6 +6,7 @@ import CreateExpenseInterface from "../interfaces/CreateExpenseInterface";
 import Pagination from "../interfaces/ExpenseWeeklyPagination";
 import MonthlyInterface from "../interfaces/MonthlyExpenseInterface";
 import MonthlyExpenseInterfaceGraph from "../interfaces/MonthlyExpenseInterfaceGraph";
+import axiosInstance from "../helpers/axiosinstance";
 const initialState: ExpenseInterface = {
   ExpenseArray: [],
   TotalPages: 0,
@@ -20,8 +21,8 @@ export const Createexpense = createAsyncThunk(
       console.log(
       "this is formdata:",FormData
       )
-      const res = await axios.post(
-        "http://localhost:8000/expense/create",
+      const res = await axiosInstance.post(
+        "/expense/create",
         FormData,
         {
           withCredentials: true,
@@ -39,8 +40,8 @@ export const GetweeklyExpense = createAsyncThunk(
   "expense/get-weekly",
   async (FormData: Pagination) => {
     try {
-      const res = await axios.get(
-        `http://localhost:8000/expense/prevweek?week=${FormData.week}&page=${FormData.currentpage}`,
+      const res = await axiosInstance.get(
+        `/expense/prevweek?week=${FormData.week}&page=${FormData.currentpage}`,
 
         {
           withCredentials: true,
@@ -57,8 +58,8 @@ export const GetGraphweek = createAsyncThunk(
   "expense/getfullweek",
   async (week: number) => {
     try {
-      const res = await axios.get(
-        `http://localhost:8000/expense/prevweekreport?week=${week}`,
+      const res = await axiosInstance.get(
+        `/expense/prevweekreport?week=${week}`,
         {
           withCredentials: true,
         }
@@ -75,8 +76,8 @@ export const Getmonthly_Expense = createAsyncThunk(
   "expense/monthly",
   async (formdata: MonthlyInterface) => {
     try {
-      const res = await axios.get(
-        `http://localhost:8000/expense/monthly?page=${formdata.page}&month=${formdata.month}&year=${formdata.year}`,
+      const res = await axiosInstance.get(
+        `/expense/monthly?page=${formdata.page}&month=${formdata.month}&year=${formdata.year}`,
         {
           withCredentials: true,
         }
@@ -92,8 +93,8 @@ export const Getmonthly_Expense_Graph = createAsyncThunk(
   "expense/monthly/graph",
   async (FormData: MonthlyExpenseInterfaceGraph) => {
     try {
-      const res = await axios.get(
-        `http://localhost:8000/expense/monthly_graph?year=${FormData.year}&month=${FormData.month}`,
+      const res = await axiosInstance.get(
+        `/expense/monthly_graph?year=${FormData.year}&month=${FormData.month}`,
         {
           withCredentials: true,
         }
@@ -110,8 +111,8 @@ export const GetFullYearReport = createAsyncThunk(
   async (year: number) => {
     try {
       console.log("this is a year from query:",year)
-      const res = await axios.get(
-        `http://localhost:8000/expense/report?year=${year}`,
+      const res = await axiosInstance.get(
+        `/expense/report?year=${year}`,
         {
           withCredentials: true,
         }
