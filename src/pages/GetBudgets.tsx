@@ -106,12 +106,12 @@ const GetBudgets: React.FC = () => {
           Get Your Budgets
         </h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 ">
           {BudgetArray?.length > 0 &&
             BudgetArray.map((budget: any) => (
               <div
                 key={budget._id}
-                className="relative bg-black h-[40vh] w-full max-w-sm m-3 rounded-lg shadow-lg shadow-indigo-300 overflow-hidden mx-auto flex flex-col items-center justify-center text-white p-2"
+                className="relative bg-black h-[70vh] w-full max-w-full sm:max-w-md m-3 rounded-lg shadow-lg shadow-indigo-300 overflow-hidden mx-auto flex flex-col items-center justify-center text-white p-2"
               >
                 {ProgressCard === budget._id ? (
                   <div className=" w-full flex flex-col items-center mb-10 pb-10 ">
