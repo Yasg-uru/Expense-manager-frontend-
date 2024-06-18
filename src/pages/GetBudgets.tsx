@@ -398,7 +398,7 @@ const GetBudgets: React.FC = () => {
                     <p className="text-green-500 font-bold">
                       Remaining Budget : {RemainingBudget}
                     </p>
-                    <div className="h-56 w-56">
+                    <div className="h-28 w-28">
                       <CircularProgressbar
                         value={PercentageUsage}
                         text={`${PercentageUsage}%`}
@@ -517,7 +517,7 @@ const GetBudgets: React.FC = () => {
               «
             </button>
             <button className="join-item btn bg-black text-white">
-              Page 22
+              Page {page}
             </button>
             <button
               onClick={handleNextPage}
