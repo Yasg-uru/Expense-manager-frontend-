@@ -90,8 +90,6 @@ const GetBudgets: React.FC = () => {
     }));
   }
 
-  
-
   const RemainingBudget = useSelector<RootStateInterface>(
     (state) => state.budget.RemainingBudget
   ) as number;
@@ -111,7 +109,7 @@ const GetBudgets: React.FC = () => {
             BudgetArray.map((budget: any) => (
               <div
                 key={budget._id}
-                className="relative bg-black h-[70vh] w-full max-w-full sm:max-w-md m-3 rounded-lg shadow-lg shadow-indigo-300 overflow-hidden mx-auto flex flex-col items-center justify-center text-white p-2"
+                className="relative bg-black h-[60vh] w-full max-w-full sm:max-w-full m-3 rounded-lg shadow-lg shadow-indigo-300 overflow-hidden mx-auto flex flex-col items-center justify-center text-white p-2"
               >
                 {ProgressCard === budget._id ? (
                   <div className=" w-full flex flex-col items-center mb-10 pb-10 ">
