@@ -57,11 +57,11 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-        <div className="text-center">
+        {/* <div className="text-center">
           <button className="btn bg-gradient-to-r from-green-500 to-indigo-500 hover:bg-gradient-to-l text-white font-bold py-2 px-6 rounded-full shadow-md">
             Get Started Now
           </button>
-        </div>
+        </div> */}
       </div>
     </HomeWrapper>
   );
