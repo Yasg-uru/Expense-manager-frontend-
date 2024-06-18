@@ -23,9 +23,9 @@ const HomeWrapper: React.FC<{ children?: React.ReactNode }> = ({
     (state) => state.auth.imageurl
   ) as string;
   console.log("this is a is loggedin:", isLoggedIn);
-  useEffect(() => {
-    dispatch(GetUserInfo() as any);
-  }, [imageurl]);
+  // useEffect(() => {
+  //   dispatch(GetUserInfo() as any);
+  // }, [imageurl]);
   return (
     <>
       <div className="drawer">

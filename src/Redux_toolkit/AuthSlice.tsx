@@ -225,7 +225,7 @@ const AuthSlice = createSlice({
         state.email = action?.payload?.user?.email;
         state.name = action?.payload?.user?.name;
       })
-      .addCase(register.rejected,(state)=>{
+      .addCase(register.rejected, (state) => {
         state.isLoggedin = false;
         localStorage.setItem("isLoggedin", "false");
         localStorage.setItem("role", "");
