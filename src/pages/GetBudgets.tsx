@@ -367,12 +367,12 @@ const GetBudgets: React.FC = () => {
   console.log("this is a percentage usage:", PercentageUsage);
   return (
     <HomeWrapper>
-      <div className="bg-black min-h-screen flex flex-col p-2 items-center">
+      <div className="bg-black min-h-screen flex flex-col p-2 items-center w-full">
         <h1 className="text-center text-2xl font-bold text-green-500">
           Get Your Budgets
         </h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-1 gap-2 mt-3 ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 w-full">
           {BudgetArray?.length > 0 &&
             BudgetArray.map((budget: any) => (
               <div
