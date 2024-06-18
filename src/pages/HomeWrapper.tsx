@@ -1,11 +1,11 @@
-import { useEffect } from "react";
+
 import { FaBars } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import RootStateInterface from "../interfaces/RootStateInterface";
-import { GetUserInfo, Logout } from "../Redux_toolkit/AuthSlice";
+import { Logout } from "../Redux_toolkit/AuthSlice";
 
 const HomeWrapper: React.FC<{ children?: React.ReactNode }> = ({
   children,
@@ -23,9 +23,7 @@ const HomeWrapper: React.FC<{ children?: React.ReactNode }> = ({
     (state) => state.auth.imageurl
   ) as string;
   console.log("this is a is loggedin:", isLoggedIn);
-  // useEffect(() => {
-  //   dispatch(GetUserInfo() as any);
-  // }, [imageurl]);
+  
   return (
     <>
       <div className="drawer">
