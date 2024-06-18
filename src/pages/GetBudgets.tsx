@@ -372,7 +372,7 @@ const GetBudgets: React.FC = () => {
           Get Your Budgets
         </h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-3 w-full">
           {BudgetArray?.length > 0 &&
             BudgetArray.map((budget: any) => (
               <div
