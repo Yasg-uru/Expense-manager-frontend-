@@ -1,4 +1,3 @@
-
 import { FaBars } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
@@ -23,7 +22,7 @@ const HomeWrapper: React.FC<{ children?: React.ReactNode }> = ({
     (state) => state.auth.imageurl
   ) as string;
   console.log("this is a is loggedin:", isLoggedIn);
-  
+
   return (
     <>
       <div className="drawer">
