@@ -398,7 +398,7 @@ const GetBudgets: React.FC = () => {
                     <p className="text-green-500 font-bold">
                       Remaining Budget : {RemainingBudget}
                     </p>
-                    <div className="h-[6vh] w-[10vw]">
+                    <div className="h-56 w-56">
                       <CircularProgressbar
                         value={PercentageUsage}
                         text={`${PercentageUsage}%`}
