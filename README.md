@@ -25,7 +25,7 @@ Smart Expense Manager And Budget Tracker is a modern Expense Management and Budg
 
 Check out the live demo: https://expense-manager-frontend-nine.vercel.app/
 
-## Demo Video
+# Demo Video
 
 upload video here 
 
