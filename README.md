@@ -25,9 +25,10 @@ Smart Expense Manager And Budget Tracker is a modern Expense Management and Budg
 
 Check out the live demo: https://expense-manager-frontend-nine.vercel.app/
 
-# Demo Video
+# Screenshots
 
-https://github.com/Yasg-uru/Expense-manager-frontend-/issues/1#issue-2379665857
+![Screenshot 2024-06-28 113858](https://github.com/Yasg-uru/Expense-manager-frontend-/assets/149750846/9b19f672-f44b-41c7-a077-86ca2b52758e)
+![Screenshot 2024-06-28 113920](https://github.com/Yasg-uru/Expense-manager-frontend-/assets/149750846/efd987df-26b7-4766-8f39-996950ae2fd3)
 
 ## Setup Instructions
 
