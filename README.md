@@ -27,7 +27,7 @@ Check out the live demo: https://expense-manager-frontend-nine.vercel.app/
 
 # Demo Video
 
-upload video here 
+https://github.com/Yasg-uru/Expense-manager-frontend-/issues/1#issue-2379665857
 
 ## Setup Instructions
 
