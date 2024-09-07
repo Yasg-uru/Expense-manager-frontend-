@@ -3,10 +3,11 @@ import React from "react";
 import ExpenseTrackImage from "../assets/expense_tracking.jpg";
 import ExpenseBudgetImage from "../assets/budget_image.jpg";
 import ExpenseBudgetReport from "../assets/Report_expense.jpg";
+import HomeWrapper from "./HomeWrapper";
 
 const Home: React.FC = () => {
   return (
-    
+    <HomeWrapper>
       <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-8">
         <div className="text-center mb-10">
           <h1 className="text-green-500 font-bold text-4xl mb-4">
@@ -64,7 +65,7 @@ const Home: React.FC = () => {
           </button>
         </div> */}
       </div>
-    
+    </HomeWrapper>
   );
 };
 

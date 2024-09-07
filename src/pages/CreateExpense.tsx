@@ -40,6 +40,7 @@ const CreateExpense: React.FC = () => {
       recurring: false,
       currency: "",
     });
+    
   };
   return (
     
