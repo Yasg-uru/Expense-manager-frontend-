@@ -1,38 +1,53 @@
-import { useState } from "react";
-import CreateBudgetInterface from "../../interfaces/CreateBudgetInterface";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-import { useDispatch } from "react-redux";
 import { createBudget } from "../../Redux_toolkit/BudgetSlice";
-const CreateBudget: React.FC = () => {
-  const [FormData, SetFormData] = useState<CreateBudgetInterface>({
-    category: "",
-    limit: 0,
-    month: 0,
-    year: 0,
-  });
-  const dispatch = useDispatch();
+import { useAppDispatch, useAppSelector } from "@/Redux_toolkit/hooks";
+import { Loader2 } from "lucide-react";
 
-  const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    dispatch(createBudget(FormData) as any);
-    SetFormData({
+// Define the Zod schema for form validation
+const CreateBudgetSchema = z.object({
+  category: z.string().min(1, "Category is required"),
+  limit: z.number().min(1, "Limit must be greater than 0"),
+  month: z.number().min(1, "Please select a valid month"),
+  year: z.number().min(1, "Please enter a valid year"),
+});
+
+type CreateBudgetSchemaType = z.infer<typeof CreateBudgetSchema>;
+
+const CreateBudget: React.FC = () => {
+  const dispatch = useAppDispatch();
+
+  const form = useForm<CreateBudgetSchemaType>({
+    resolver: zodResolver(CreateBudgetSchema),
+    defaultValues: {
       category: "",
       limit: 0,
       month: 0,
       year: 0,
-    });
-  };
-  const handleChange = (
-    event:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const { name, value } = event.target;
-    SetFormData({
-      ...FormData,
-      [name]: value,
-    });
-  };
+    },
+  });
 
   const months = [
     { value: 1, label: "January" },
@@ -48,95 +63,171 @@ const CreateBudget: React.FC = () => {
     { value: 11, label: "November" },
     { value: 12, label: "December" },
   ];
-  // console.log("this is a formdata month:",FormData.month)
+
+  const currentYear = new Date().getFullYear();
+  const yearOptions = Array.from(
+    { length: 10 },
+    (_, index) => currentYear + index
+  );
+
+  const onSubmit = (data: CreateBudgetSchemaType) => {
+    console.log("Form submitted:", data);
+    dispatch(createBudget(data));
+  };
+  const { isLoading } = useAppSelector((state) => state.budget);
   return (
-
-      <div className="bg-black min-h-screen w-full flex flex-col items-center justify-center">
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-2 p-3 border w-full rounded-lg shadow-2xl shadow-green-500 max-w-sm "
-        >
-          <h1 className="text-center text-green-500 font-bold text-2xl">
-            Create Budget Form
-          </h1>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="category" className="text-white ">
-              Category
-            </label>
-            <input
-              type="text"
-              id="category"
+    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gray-100 dark:bg-black">
+      <div className="w-full max-w-sm p-6 bg-white rounded-lg border-2 border-green-600  shadow-md dark:bg-black">
+        <h1 className="text-center text-green-500 font-bold text-2xl">
+          Create Budget Form
+        </h1>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
               name="category"
-              value={FormData.category}
-              onChange={handleChange}
-              placeholder="Enter the amount"
-              className="border w-full text-white border-gray-700 rounded-md bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 dark:text-gray-300">
+                    Category
+                  </FormLabel>
+                  <FormControl>
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      name="category"
+                    >
+                      <SelectTrigger className="w-full border-gray-300 dark:border-gray-600 dark:bg-black">
+                        <SelectValue placeholder="Category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Entertainment">
+                          Entertainment
+                        </SelectItem>
+                        <SelectItem value="Bills">Bills</SelectItem>
+                        <SelectItem value="Transportation">
+                          Transportation
+                        </SelectItem>
+                        <SelectItem value="Groceries">Groceries</SelectItem>
+                        <SelectItem value="Other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
+                    Enter your budget category.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="limit" className="text-white ">
-              Limit
-            </label>
-            <input
-              type="number"
-              id="amount"
+            <FormField
+              control={form.control}
               name="limit"
-              value={FormData.limit}
-              onChange={handleChange}
-              placeholder="Enter the limit"
-              className="border w-full text-white border-gray-700 rounded-md bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 dark:text-gray-300">
+                    Limit
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Enter limit"
+                      className="border-gray-300 dark:border-gray-600 dark:bg-black"
+                      {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
+                  </FormControl>
+                  <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
+                    Enter the budget limit.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="month" className="text-white ">
-              Month
-            </label>
-            {/* <input
-              type="text"
-              id="month"
+            <FormField
+              control={form.control}
               name="month"
-              value={FormData.month}
-              onChange={handleChange}
-              placeholder="Enter the month"
-              className="border w-full text-white border-gray-700 rounded-md bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
-            /> */}
-            <select
-              id="month-dropdown"
-              name="month"
-              className="w-52 p-2 text-white border border-gray-300 rounded-md bg-black focus:outline-none focus:border-gray-500 transition-all duration-300 cursor-pointer"
-              value={FormData.month || ""}
-              onChange={handleChange}
-            >
-              <option value="" disabled>
-                Select a month
-              </option>
-              {months.map((month) => (
-                <option key={month.value} value={month.value}>
-                  {month.label}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="month" className="text-white ">
-              Year
-            </label>
-            <input
-              type="number"
-              id="year"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 dark:text-gray-300">
+                    Month
+                  </FormLabel>
+                  <FormControl>
+                    <Select
+                      value={field.value?.toString() || ""}
+                      onValueChange={(value) => field.onChange(Number(value))}
+                      name="month"
+                    >
+                      <SelectTrigger className="w-full border-gray-300 dark:border-gray-600 dark:bg-black">
+                        <SelectValue placeholder="Select a month" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Months</SelectLabel>
+                          {months.map((month) => (
+                            <SelectItem
+                              key={month.value}
+                              value={month.value.toString()}
+                            >
+                              {month.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="year"
-              value={FormData.year}
-              onChange={handleChange}
-              placeholder="Enter the year"
-              className="border w-full text-white border-gray-700 rounded-md bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 dark:text-gray-300">
+                    Year
+                  </FormLabel>
+                  <FormControl>
+                    <Select
+                      value={field.value?.toString() || ""}
+                      onValueChange={(value) => field.onChange(Number(value))}
+                      name="year"
+                    >
+                      <SelectTrigger className="w-full border-gray-300 dark:border-gray-600 dark:bg-black">
+                        <SelectValue placeholder="Select a year" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Years</SelectLabel>
+                          {yearOptions.map((year) => (
+                            <SelectItem key={year} value={year.toString()}>
+                              {year}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <button className="btn bg-gradient-to-r from-green-500 to-indigo-500 hover:bg-gradient-to-l text-white font-bold py-2 px-4 rounded-full shadow-md ">
-            Create Budget
-          </button>
-        </form>
+            <Button
+              type="submit"
+              className="w-full bg-gradient-to-r from-green-500 to-indigo-500 hover:bg-gradient-to-l text-white font-bold py-2 rounded-full shadow-md"
+            >
+              {!isLoading ? (
+                " Create Budget"
+              ) : (
+                <Loader2 className="h-6 w-6 animate-spin " />
+              )}
+            </Button>
+          </form>
+        </Form>
       </div>
-
+    </div>
   );
 };
+
 export default CreateBudget;

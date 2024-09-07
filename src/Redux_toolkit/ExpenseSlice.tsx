@@ -1,37 +1,35 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import ExpenseInterface from "../interfaces/ExpenseSliceInterface";
 import toast from "react-hot-toast";
-import CreateExpenseInterface from "../interfaces/CreateExpenseInterface";
+
 import Pagination from "../interfaces/ExpenseWeeklyPagination";
 import MonthlyInterface from "../interfaces/MonthlyExpenseInterface";
 import MonthlyExpenseInterfaceGraph from "../interfaces/MonthlyExpenseInterfaceGraph";
 import axiosInstance from "../helpers/axiosinstance";
+
+import CreateExpenseInterface from "@/interfaces/CreateExpenseInterface";
 const initialState: ExpenseInterface = {
   ExpenseArray: [],
   TotalPages: 0,
   TotalExpenses: 0,
   FullWeekExpense: [],
   FullYearExpense: {},
+  isLoading: false,
 };
 export const Createexpense = createAsyncThunk(
   "expense/create",
-  async (FormData: CreateExpenseInterface) => {
+  async (FormData: CreateExpenseInterface, { rejectWithValue }) => {
     try {
-      console.log(
-      "this is formdata:",FormData
-      )
-      const res = await axiosInstance.post(
-        "/expense/create",
-        FormData,
-        {
-          withCredentials: true,
-        }
-      );
+      console.log("this is formdata:", FormData);
+      const res = await axiosInstance.post("/expense/create", FormData, {
+        withCredentials: true,
+      });
       toast.success("expense Created Successfully");
 
       return res.data;
     } catch (error) {
       toast.error("error is occured while creating expense ");
+      return rejectWithValue("Failed to create expense");
     }
   }
 );
@@ -109,13 +107,10 @@ export const GetFullYearReport = createAsyncThunk(
   "expense/FullyearReport",
   async (year: number) => {
     try {
-      console.log("this is a year from query:",year)
-      const res = await axiosInstance.get(
-        `/expense/report?year=${year}`,
-        {
-          withCredentials: true,
-        }
-      );
+      console.log("this is a year from query:", year);
+      const res = await axiosInstance.get(`/expense/report?year=${year}`, {
+        withCredentials: true,
+      });
       toast.success("fetched full year Report");
 
       return res.data;
@@ -150,6 +145,15 @@ const ExpenseSlice = createSlice({
       .addCase(GetFullYearReport.fulfilled, (state, action) => {
         state.FullYearExpense = action.payload.yearlyExpensesByDay;
         state.TotalExpenses = action?.payload?.totalExpense;
+      })
+      .addCase(Createexpense.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(Createexpense.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(Createexpense.rejected, (state) => {
+        state.isLoading = false;
       });
   },
 });

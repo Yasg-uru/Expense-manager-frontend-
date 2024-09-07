@@ -7,6 +7,7 @@ interface Budget {
   year: number;
   alertThreshold: number;
   actualSpent: number;
+
   __v?: number; // Optional property for Mongoose versioning
 }
 export default interface BudgetSliceInterface {
@@ -14,5 +15,5 @@ export default interface BudgetSliceInterface {
   Totalpages:number;
   RemainingBudget:number;
   PercentageUsage:number;
-  
+  isLoading:boolean;
 }

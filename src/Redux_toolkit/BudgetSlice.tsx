@@ -8,6 +8,7 @@ const initialState: BudgetSliceInterface = {
   Totalpages: 0,
   RemainingBudget: 0,
   PercentageUsage: 0,
+  isLoading: false,
 };
 export const createBudget = createAsyncThunk(
   "budget/create",
@@ -21,6 +22,7 @@ export const createBudget = createAsyncThunk(
       return res.data;
     } catch (error) {
       toast.error("failed to create budget ");
+      throw error;
     }
   }
 );
@@ -75,7 +77,7 @@ export const getprogress = createAsyncThunk(
   async (formdata: { year: number; month: number; category: string }) => {
     try {
       console.log("this is a formdata:", formdata);
-      const res = await axiosInstance.post(`/budget/monthly`,formdata, {
+      const res = await axiosInstance.post(`/budget/monthly`, formdata, {
         withCredentials: true,
       });
       toast.success("fetched your budget usage successfully");
@@ -98,6 +100,15 @@ const BudgetSlice = createSlice({
       .addCase(getprogress.fulfilled, (state, action) => {
         state.RemainingBudget = action?.payload?.remainingbudget;
         state.PercentageUsage = action?.payload?.percentageUsage;
+      })
+      .addCase(createBudget.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(createBudget.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(createBudget.pending, (state) => {
+        state.isLoading = true;
       });
   },
 });

@@ -14,6 +14,8 @@ interface YearlyExpensesByDay {
 
 export default interface ExpenseInterface {
   ExpenseArray: expenseInfo[];
+  isLoading:boolean;
+  
   TotalPages: number;
   TotalExpenses: number;
   FullWeekExpense: expenseInfo[];
