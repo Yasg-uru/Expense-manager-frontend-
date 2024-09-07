@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-
-import { Createexpense } from "../Redux_toolkit/ExpenseSlice";
-
-import CreateExpenseInterface from "../interfaces/CreateExpenseInterface";
 import { useAppDispatch, useAppSelector } from "@/Redux_toolkit/hooks";
+import { Createexpense } from "../Redux_toolkit/ExpenseSlice";
+import CreateExpenseInterface from "../interfaces/CreateExpenseInterface";
 import { Loader2 } from "lucide-react";
+
 const CreateExpense: React.FC = () => {
   const dispatch = useAppDispatch();
   const { isLoading } = useAppSelector((state) => state.expense);
@@ -16,15 +15,18 @@ const CreateExpense: React.FC = () => {
     recurring: false,
     currency: "",
   });
-  const [ShowOtherCategory, setShowOtherCategory] = useState<boolean>(false);
+  const [showOtherCategory, setShowOtherCategory] = useState<boolean>(false);
 
-  const handlechange = (event: any) => {
+  const handleChange = (
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
     const { name, value } = event.target;
-    if (name == "category" && value == "Other") {
+    if (name === "category" && value === "Other") {
       setShowOtherCategory(true);
     } else {
-      // setShowOtherCategory(false);
-
+      setShowOtherCategory(false);
       setFormdata({
         ...formData,
         [name]: value,
@@ -32,7 +34,7 @@ const CreateExpense: React.FC = () => {
     }
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch(Createexpense(formData));
     setFormdata({
@@ -44,45 +46,43 @@ const CreateExpense: React.FC = () => {
       currency: "",
     });
   };
+
   return (
-    <div className="h-screen flex justify-center items-center bg-black">
+    <div className="h-screen flex justify-center items-center bg-gray-100 dark:bg-black">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col w-full  gap-4 justify-center items-center text-white p-8 rounded-lg shadow-lg bg-black border-2 border-green-500 max-w-sm"
+        className="flex flex-col w-full gap-4 justify-center items-center text-gray-900 dark:text-gray-100 p-8 rounded-lg shadow-lg bg-white dark:bg-black border-2 border-green-500 dark:border-green-400 max-w-sm"
       >
         <h1 className="text-3xl font-bold text-center mb-6 text-green-500">
           Create Expense
         </h1>
 
         <div className="flex flex-col gap-2 w-full">
-          <label htmlFor="amount" className="text-lg text-gray-300">
+          <label htmlFor="amount" className="text-lg">
             Amount
           </label>
-
           <input
             type="number"
             id="amount"
             name="amount"
             value={formData.amount}
-            onChange={handlechange}
+            onChange={handleChange}
             placeholder="Enter the amount"
-            className="border w-full border-gray-700 rounded-md bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
+            className="border w-full border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
             required
           />
         </div>
 
         <div className="flex flex-col gap-2 w-full">
-          <label htmlFor="category" className="text-lg text-gray-300">
+          <label htmlFor="category" className="text-lg">
             Category
           </label>
-
           <select
             id="category"
             name="category"
             value={formData.category}
-            onChange={handlechange}
-            className="border w-full border-gray-700 rounded-md bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
-            // required
+            onChange={handleChange}
+            className="border w-full border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
           >
             <option value="">Select a Category</option>
             <option value="Groceries">Groceries</option>
@@ -92,51 +92,49 @@ const CreateExpense: React.FC = () => {
             <option value="Other">Other</option>
           </select>
         </div>
-        {ShowOtherCategory && (
+        {showOtherCategory && (
           <div className="flex flex-col gap-2 w-full">
-            <label htmlFor="category" className="text-lg text-gray-300">
+            <label htmlFor="anothercategory" className="text-lg">
               Another Category
             </label>
-
             <input
               type="text"
               id="anothercategory"
               name="category"
               value={formData.category}
-              onChange={handlechange}
+              onChange={handleChange}
               placeholder="Enter the category"
-              className="border w-full border-gray-700 rounded-md bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
+              className="border w-full border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
               required
             />
           </div>
         )}
 
         <div className="flex w-full flex-col gap-2">
-          <label htmlFor="date" className="text-lg text-gray-300">
+          <label htmlFor="date" className="text-lg">
             Date
           </label>
           <input
             type="date"
             id="date"
             name="date"
-            onChange={handlechange}
-            className="border w-full border-gray-700 rounded-md bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
+            onChange={handleChange}
+            className="border w-full border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
             required
           />
         </div>
 
         <div className="flex flex-col gap-2 w-full">
-          <label htmlFor="description" className="text-lg text-gray-300">
+          <label htmlFor="description" className="text-lg">
             Description
           </label>
-
           <textarea
             id="description"
             name="description"
             value={formData.description}
-            onChange={handlechange}
+            onChange={handleChange}
             placeholder="Enter the description"
-            className="border w-full border-gray-700 rounded-md bg-black px-4 py-2 h-24 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
+            className="border w-full border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-black px-4 py-2 h-24 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
             required
           />
         </div>
