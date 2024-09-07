@@ -230,7 +230,7 @@ const Navbar: React.FC = () => {
     <div>
       {!isMobile ? (
         // Desktop Navbar
-        <div className="navbar bg-gradient-to-r from-gray-100 to-gray-300 dark:from-gray-900 dark:to-gray-800 shadow-lg">
+        <div className="navbar z-10 bg-gradient-to-r from-gray-100 to-gray-300 dark:from-gray-900 dark:to-gray-800 shadow-lg">
           <div className="flex-1">
             <Link
               to="/"
