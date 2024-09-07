@@ -183,7 +183,7 @@
 // };
 
 // export default Navbar;
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Logout } from "../Redux_toolkit/AuthSlice";
 import ModeToggle from "@/components/mode-toggle";
@@ -201,30 +201,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import { RiAddBoxLine, RiProgress1Line } from "react-icons/ri";
-
+import { useMediaQuery } from "@uidotdev/usehooks";
 const Navbar: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedin);
-  const { isLoading, name } = useAppSelector((state) => state.auth);
+  const isMobile = useMediaQuery("(max-width: 600px)");
+  
+  const { isLoading, name,isLoggedin } = useAppSelector((state) => state.auth);
   const imageurl = useAppSelector((state) => state.auth.imageurl) as string;
-
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    // Check screen size
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    handleResize(); // Check initial screen size
-    window.addEventListener("resize", handleResize); // Add resize listener
-
-    return () => {
-      window.removeEventListener("resize", handleResize); // Clean up on unmount
-    };
-  }, []);
 
   const handleLogout = () => {
     dispatch(Logout())
@@ -304,7 +289,7 @@ const Navbar: React.FC = () => {
             {ModeToggle({})}
 
             {/* Sign In / User Avatar */}
-            {!isLoggedIn ? (
+            {!isLoggedin ? (
               <Button
                 className="bg-gradient-to-r from-pink-500 to-purple-500"
                 onClick={() => navigate("/Login")}
