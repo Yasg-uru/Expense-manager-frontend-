@@ -1,5 +1,5 @@
 import { useState } from "react";
-import HomeWrapper from "./HomeWrapper";
+
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { ResetPassword } from "../Redux_toolkit/AuthSlice";
@@ -20,7 +20,7 @@ const ResetPasswordForm: React.FC = () => {
     dispatch(ResetPassword({ token, Password }) as any);
   };
   return (
-    <HomeWrapper>
+   
       <div className="min-h-screen bg-black flex flex-cols items-center justify-center">
         <form
           className="flex flex-col gap-4 justify-center items-center text-white p-8 rounded-lg shadow-lg bg-black border-2 border-green-500"
@@ -68,7 +68,7 @@ const ResetPasswordForm: React.FC = () => {
           </button>
         </form>
       </div>
-    </HomeWrapper>
+
   );
 };
 export default ResetPasswordForm;

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import HomeWrapper from "./HomeWrapper";
+
 import RootStateInterface from "../interfaces/RootStateInterface";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { User } from "../interfaces/AuthSlice";
@@ -43,7 +43,7 @@ const ProfileInfo: React.FC = () => {
     dispatch(GetUserInfo() as any);
   }, [imageurl, name]);
   return (
-    <HomeWrapper>
+    
       <div className="min-h-screen bg-black flex flex-col items-center justify-center">
         <div className="flex flex-col gap-1 p-2 h-[50vh] w-[70vw] border-[0.5px] border-green-500 rounded-md">
           <div className="flex justify-between">
@@ -153,7 +153,7 @@ const ProfileInfo: React.FC = () => {
           </button>
         </div>
       </div>
-    </HomeWrapper>
+    
   );
 };
 

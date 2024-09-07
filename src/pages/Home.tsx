@@ -1,17 +1,18 @@
 import React from "react";
-import HomeWrapper from "./HomeWrapper";
+
 import ExpenseTrackImage from "../assets/expense_tracking.jpg";
 import ExpenseBudgetImage from "../assets/budget_image.jpg";
 import ExpenseBudgetReport from "../assets/Report_expense.jpg";
 
 const Home: React.FC = () => {
   return (
-    <HomeWrapper>
+    
       <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-8">
         <div className="text-center mb-10">
           <h1 className="text-green-500 font-bold text-4xl mb-4">
             Welcome to Expense Master
           </h1>
+
           <p className="text-lg text-gray-300">
             Your ultimate solution for managing expenses with ease and
             precision.
@@ -63,7 +64,7 @@ const Home: React.FC = () => {
           </button>
         </div> */}
       </div>
-    </HomeWrapper>
+    
   );
 };
 

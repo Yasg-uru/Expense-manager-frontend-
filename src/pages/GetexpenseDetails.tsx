@@ -1,5 +1,5 @@
 import { useState } from "react";
-import HomeWrapper from "./HomeWrapper";
+
 import WeeklyExpense from "./WeeklyExpense";
 import GetMonthlyExpense from "./GetMonthlyExpense";
 import GetYearlyExpense from "./GetYearlyExpense";
@@ -8,7 +8,7 @@ const GetExpenseDetails: React.FC = () => {
   const [choice, setchoice] = useState<string>("weekly");
 
   return (
-    <HomeWrapper>
+ 
       <div className="min-h-screen bg-black p-4">
         <h1 className=" text-green-500 text-3xl font-bold text-center mb-6">
           Get Expenses
@@ -71,7 +71,6 @@ const GetExpenseDetails: React.FC = () => {
           (choice === "yearly" && <GetYearlyExpense />) ||
           (choice === "yearly-report" && <GetYearlyExpenseReport />)}
       </div>
-    </HomeWrapper>
   );
 };
 export default GetExpenseDetails;

@@ -11,9 +11,11 @@ import GetBudgets from "./pages/GetBudgets";
 import ResetPasswordForm from "./pages/ResetPasswordForm";
 import ProtectedHelper from "./helpers/ProtectedHelper";
 import ProfileInfo from "./pages/ProfileInfo";
+import Navbar from "./pages/Navbar";
 function App() {
   return (
     <>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Signup />} />

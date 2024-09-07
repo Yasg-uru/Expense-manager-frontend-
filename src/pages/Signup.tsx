@@ -1,5 +1,5 @@
 import { useState } from "react";
-import HomeWrapper from "./HomeWrapper";
+
 import signupinterface from "../interfaces/AuthenticationInterface";
 import { useDispatch } from "react-redux";
 import { register } from "../Redux_toolkit/AuthSlice";
@@ -47,7 +47,7 @@ const Signup: React.FC = () => {
     });
   }
   return (
-    <HomeWrapper>
+    
       <div className="h-screen flex justify-center items-center bg-black">
         <form
           className="flex flex-col gap-4 justify-center items-center text-white p-8 rounded-lg shadow-lg bg-black border-2 border-green-500"
@@ -120,7 +120,7 @@ const Signup: React.FC = () => {
           </button>
         </form>
       </div>
-    </HomeWrapper>
+    
   );
 };
 

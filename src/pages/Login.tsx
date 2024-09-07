@@ -1,5 +1,5 @@
 import { useState } from "react";
-import HomeWrapper from "./HomeWrapper";
+
 import LoginInterface from "../interfaces/LoginInterface";
 import { useDispatch } from "react-redux";
 import { forgotpassword, login } from "../Redux_toolkit/AuthSlice";
@@ -40,7 +40,7 @@ const Login: React.FC = () => {
     setisResetPassword(!isResetPassword);
   };
   return (
-    <HomeWrapper>
+    
       <div className="h-screen flex justify-center items-center bg-black">
         <form
           className="flex flex-col gap-4 justify-center items-center text-white p-8 rounded-lg shadow-lg bg-black border-2 border-green-500"
@@ -112,7 +112,7 @@ const Login: React.FC = () => {
           </p>
         </form>
       </div>
-    </HomeWrapper>
+
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import HomeWrapper from "./HomeWrapper";
+
 import { Createexpense } from "../Redux_toolkit/ExpenseSlice";
 import { useDispatch } from "react-redux";
 import CreateExpenseInterface from "../interfaces/CreateExpenseInterface";
@@ -42,7 +42,7 @@ const CreateExpense: React.FC = () => {
     });
   };
   return (
-    <HomeWrapper>
+    
       <div className="h-screen flex justify-center items-center bg-black">
         <form
           onSubmit={handleSubmit}
@@ -147,7 +147,7 @@ const CreateExpense: React.FC = () => {
           </button>
         </form>
       </div>
-    </HomeWrapper>
+    
   );
 };
 
