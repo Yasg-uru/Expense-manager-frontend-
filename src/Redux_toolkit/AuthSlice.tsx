@@ -14,7 +14,8 @@ const initialState: User = {
   isLoggedin: localStorage.getItem("isLoggedin") === "true" ? true : false,
   imageurl: "",
   email: "",
-  name: "",
+  name: localStorage.getItem("name") || "",
+  isLoading: false,
 };
 // export const register = createAsyncThunk(
 //   "/auth/register",
@@ -231,26 +232,28 @@ const AuthSlice = createSlice({
         localStorage.setItem("role", "");
         state.role = "";
       })
-      .addCase(login.fulfilled, (state, action) => {
-        (state.isLoggedin = true), localStorage.setItem("isLoggedin", "true");
-        state.role = action?.payload?.user?.role;
-        localStorage.setItem("role", action?.payload?.user?.role);
-        state.imageurl = action?.payload?.user?.profileurl;
-        state.email = action?.payload?.user?.email;
-        state.name = action?.payload?.user?.name;
-      })
-      .addCase(login.rejected, (state) => {
-        state.isLoggedin = false;
-        localStorage.setItem("isLoggedin", "false");
-        localStorage.setItem("role", "");
-        state.role = "";
-      })
       .addCase(Logout.fulfilled, (state) => {
         state.isLoggedin = false;
         localStorage.setItem("isLoggedin", "false");
         localStorage.setItem("role", "");
-        state.role = "";
+        state.isLoading = false;
       })
+      .addCase(Logout.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(Logout.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        (state.isLoggedin = true), localStorage.setItem("isLoggedin", "true");
+        state.role = action?.payload?.user?.role;
+        localStorage.setItem("role", action?.payload?.user?.role);
+        localStorage.setItem("name", action?.payload?.user?.name);
+        state.imageurl = action?.payload?.user?.profileurl;
+        state.email = action?.payload?.user?.email;
+        state.name = action?.payload?.user?.name;
+      })
+
       .addCase(Profilechange.fulfilled, (state, action) => {
         state.imageurl = action?.payload?.user?.profileurl;
       })

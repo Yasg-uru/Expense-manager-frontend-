@@ -1,6 +1,6 @@
 import { useState } from "react";
 import CreateBudgetInterface from "../../interfaces/CreateBudgetInterface";
-import HomeWrapper from "../HomeWrapper";
+
 import { useDispatch } from "react-redux";
 import { createBudget } from "../../Redux_toolkit/BudgetSlice";
 const CreateBudget: React.FC = () => {
@@ -50,7 +50,7 @@ const CreateBudget: React.FC = () => {
   ];
   // console.log("this is a formdata month:",FormData.month)
   return (
-    <HomeWrapper>
+
       <div className="bg-black min-h-screen w-full flex flex-col items-center justify-center">
         <form
           onSubmit={handleSubmit}
@@ -136,7 +136,7 @@ const CreateBudget: React.FC = () => {
           </button>
         </form>
       </div>
-    </HomeWrapper>
+
   );
 };
 export default CreateBudget;

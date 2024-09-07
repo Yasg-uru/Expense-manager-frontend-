@@ -5,6 +5,7 @@ export interface User {
   imageurl?:string ;
   email:string;
   name:string;
+  isLoading:boolean;
   
 
 }
