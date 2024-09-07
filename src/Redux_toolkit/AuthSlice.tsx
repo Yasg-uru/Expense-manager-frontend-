@@ -71,15 +71,16 @@ export const register = createAsyncThunk(
 );
 export const login = createAsyncThunk(
   "/auth/login",
-  async (formdata: LoginInterface) => {
+  async (formdata: LoginInterface,{rejectWithValue}) => {
     try {
       const res = await axiosInstance.post("/user/login", formdata, {
         withCredentials: true,
       });
       toast.success("Logged In successfully");
       return res.data;
-    } catch (error) {
+    } catch (error:any) {
       toast.error("Error is occured in Login");
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
@@ -252,6 +253,15 @@ const AuthSlice = createSlice({
         state.imageurl = action?.payload?.user?.profileurl;
         state.email = action?.payload?.user?.email;
         state.name = action?.payload?.user?.name;
+        state.isLoading=false;
+      })
+      .addCase(login.pending,(state)=>{
+        state.isLoading=true;
+
+      })
+      .addCase(login.rejected,(state)=>{
+        state.isLoading=false;
+
       })
 
       .addCase(Profilechange.fulfilled, (state, action) => {

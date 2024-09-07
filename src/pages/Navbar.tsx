@@ -207,8 +207,8 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const isMobile = useMediaQuery("(max-width: 600px)");
-  
-  const { isLoading, name,isLoggedin } = useAppSelector((state) => state.auth);
+
+  const { isLoading, name, isLoggedin } = useAppSelector((state) => state.auth);
   const imageurl = useAppSelector((state) => state.auth.imageurl) as string;
 
   const handleLogout = () => {
