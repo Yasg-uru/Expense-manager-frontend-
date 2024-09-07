@@ -188,7 +188,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Logout } from "../Redux_toolkit/AuthSlice";
 import ModeToggle from "@/components/mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CreditCard, LifeBuoy, LogOut, Settings, User } from "lucide-react";
+import { CreditCard, LogOut, Settings, User } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/Redux_toolkit/hooks";
 import { Button } from "@/components/ui/button";
 import {
@@ -197,8 +197,6 @@ import {
   DropdownMenuItem,
   DropdownMenuGroup,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
@@ -334,9 +332,9 @@ const Navbar: React.FC = () => {
                       <Settings className="mr-2 h-4 w-4" /> Settings
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
-                    {isLoading ? "Logging out..." : "Log out"}
+                    <span>{isLoading ? "Logging out..." : "Log out"}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -364,16 +362,15 @@ const Navbar: React.FC = () => {
             to="/create-budget"
             className="flex flex-col items-center text-gray-600 dark:text-gray-300"
           >
-            <RiAddBoxLine className="h-6 w-6"/>
+            <RiAddBoxLine className="h-6 w-6" />
             <span className="text-xs flex items-center justify-center">
-             Budget
+              Budget
             </span>
           </Link>
           <Link
             to="/getbudgets"
             className="flex flex-col items-center text-gray-600 dark:text-gray-300"
           >
-            
             <RiProgress1Line className="h-6 w-6" />
             <span className="text-xs">Budgets</span>
           </Link>
