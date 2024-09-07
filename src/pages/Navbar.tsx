@@ -1,7 +1,7 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import RootStateInterface from "../interfaces/RootStateInterface";
+
+import { Link, useNavigate } from "react-router-dom";
+
 import { Logout } from "../Redux_toolkit/AuthSlice";
 import ModeToggle from "@/components/mode-toggle"; // Assuming you have ModeToggle for dark/light mode
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -37,9 +37,9 @@ const Navbar: React.FC = () => {
 
   const imageurl = useAppSelector((state) => state.auth.imageurl) as string;
 
-  const HandleLogout = () => {
-    dispatch(Logout() as any);
-  };
+//   const HandleLogout = () => {
+//     dispatch(Logout() as any);
+//   };
 
   return (
     <div className="navbar bg-gradient-to-r from-gray-100 to-gray-300 dark:from-gray-900 dark:to-gray-800 shadow-lg">
