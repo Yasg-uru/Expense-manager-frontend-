@@ -25,7 +25,7 @@ function App() {
           <Route path="/create-expense" element={<CreateExpense />} />
           <Route path="/getexpense" element={<GetExpenseDetails />} />
           <Route path="/create-budget" element={<CreateBudget />} />
-          <Route path="getbudgets" element={<GetBudgets />} />
+          <Route path="/getbudgets" element={<GetBudgets />} />
           <Route path="/profile" element={<ProfileInfo />} />
         </Route>
       </Routes>
