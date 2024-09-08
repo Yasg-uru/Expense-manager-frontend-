@@ -17,13 +17,13 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
+        {/* <Route path="/" element={<Home />} /> */}
         <Route path="/register" element={<Signup />} />
         <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
         <Route path="/login" element={<Login />} />
         <Route element={<ProtectedHelper allowedrole={["user", "admin"]} />}>
           <Route path="/create-expense" element={<CreateExpense />} />
-          <Route path="/getexpense" element={<GetExpenseDetails />} />
+          <Route path="/" element={<GetExpenseDetails />} />
           <Route path="/create-budget" element={<CreateBudget />} />
           <Route path="/getbudgets" element={<GetBudgets />} />
           <Route path="/profile" element={<ProfileInfo />} />

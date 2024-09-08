@@ -57,7 +57,7 @@ const GetfullweeklyReportByGraph: React.FC<Prop> = ({ week, TotalExpense }) => {
     ],
   };
   return (
-    <div className="min-h-screen flex flex-col mt-4">
+    <div className=" flex flex-col  items-center justify-center">
       <p className="text-green-500 ">
         Total Expense of week {week} is ₹{TotalExpense}
       </p>

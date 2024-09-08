@@ -30,7 +30,6 @@ const WeeklyExpense: React.FC = () => {
   const dispatch = useDispatch();
   const [week, setWeek] = useState<number>(1);
   const [currentpage, setcurrentpage] = useState<number>(1);
-  const [showgraph, setshowgraph] = useState<boolean>(false);
 
   useEffect(() => {
     dispatch(GetweeklyExpense({ week, currentpage }) as any);
@@ -90,6 +89,9 @@ const WeeklyExpense: React.FC = () => {
           Third Week
         </button>
       </div>
+
+      <GetfullweeklyReportByGraph week={week} TotalExpense={TotalExpense} />
+
       <div className="flex flex-col gap-1">
         {expenseArray?.map((expense: any) => (
           <ExpenseCard key={expense._id} expense={expense} />
@@ -114,7 +116,7 @@ const WeeklyExpense: React.FC = () => {
           »
         </button>
       </div>
-      <div className="flex flex-col justify-center items-center">
+      {/* <div className="flex flex-col justify-center items-center">
         {expenseArray?.length !== 0 && (
           <button
             onClick={() => {
@@ -127,10 +129,7 @@ const WeeklyExpense: React.FC = () => {
               : "Close Full Week Report By Graph"}
           </button>
         )}
-        {showgraph && (
-          <GetfullweeklyReportByGraph week={week} TotalExpense={TotalExpense} />
-        )}
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -267,14 +267,14 @@ const Navbar: React.FC = () => {
                   Create Budget
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   to="/getexpense"
                   className="text-lg font-medium px-4 py-2 rounded-md"
                 >
                   Get Expenses
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   to="/getbudgets"

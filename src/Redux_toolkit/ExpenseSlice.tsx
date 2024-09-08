@@ -33,6 +33,30 @@ export const Createexpense = createAsyncThunk(
     }
   }
 );
+export const GetDailyExpenses = createAsyncThunk(
+  "expense/get-daily",
+  async (date: Date, { rejectWithValue }) => {
+    try {
+      const formatDate = (date: Date) => {
+        const year = date.getFullYear(); // Get the full year (e.g., 2024)
+        const month = String(date.getMonth() + 1).padStart(2, "0"); // Get the month (0-indexed) and pad with '0' if necessary
+        const day = String(date.getDate()).padStart(2, "0"); // Get the day and pad with '0' if necessary
+        return `${year}-${month}-${day}`;
+      };
+      const formattedDate = formatDate(date);
+
+      const response = await axiosInstance.get(
+        `expense/get-daily/${formattedDate}`,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 export const GetweeklyExpense = createAsyncThunk(
   "expense/get-weekly",
   async (FormData: Pagination) => {
@@ -126,6 +150,10 @@ const ExpenseSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
+      .addCase(GetDailyExpenses.fulfilled, (state, action) => {
+        state.ExpenseArray = action.payload?.expenses;
+        state.TotalExpenses = action.payload?.TotalExpense;
+      })
       .addCase(GetweeklyExpense.fulfilled, (state, action) => {
         state.ExpenseArray = action?.payload?.expenses;
         state.TotalExpenses = action?.payload?.totalExpense;
