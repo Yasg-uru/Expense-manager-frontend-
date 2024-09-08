@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import MonthlyInterface from "../interfaces/MonthlyExpenseInterface";
 import { Getmonthly_Expense } from "../Redux_toolkit/ExpenseSlice";
-import RootStateInterface from "../interfaces/RootStateInterface";
+
 import ExpenseCard from "../helpers/ExpenseCard";
 import GetfullmonthlyReportByGraph from "./GetfullmonthlyReportByGraph";
 
@@ -16,6 +16,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { useAppSelector } from "@/Redux_toolkit/hooks";
+
 
 const GetMonthlyExpense: React.FC = () => {
   const dispatch = useDispatch();
@@ -57,16 +59,8 @@ const GetMonthlyExpense: React.FC = () => {
     dispatch(Getmonthly_Expense(formdata) as any);
   };
 
-  const expenseArray = useSelector<RootStateInterface, any[]>(
-    (state) => state.expense.ExpenseArray
-  );
-  const totalPages = useSelector<RootStateInterface, number>(
-    (state) => state.expense.TotalPages
-  );
-  const TotalExpense: any = useSelector<RootStateInterface>(
-    (state) => state.expense.TotalExpenses
-  );
-
+  
+const {TotalExpenses,TotalPages ,ExpenseArray}=useAppSelector((state)=>state.expense)
   const handlePreviousPage = () => {
     setFormdata({
       ...formdata,
@@ -160,17 +154,17 @@ const GetMonthlyExpense: React.FC = () => {
           </Button>
         </div>
       </form>
-      {expenseArray.length > 0 && (
+      {ExpenseArray.length > 0 && (
         <GetfullmonthlyReportByGraph
           month={formdata.month}
           year={formdata.year}
-          Totalexpense={TotalExpense}
+          Totalexpense={TotalExpenses}
         />
       )}
 
       <div className="flex mt-12 flex-col gap-1 w-full">
-        {expenseArray.length > 0 ? (
-          expenseArray.map((expense: any) => (
+        {ExpenseArray.length > 0 ? (
+          ExpenseArray.map((expense: any) => (
             <ExpenseCard key={expense._id} expense={expense} />
           ))
         ) : (
@@ -180,7 +174,7 @@ const GetMonthlyExpense: React.FC = () => {
         )}
       </div>
 
-      {expenseArray.length > 0 && (
+      {ExpenseArray.length > 0 && (
         <div className="join bg-black border border-green-500">
           <button
             disabled={formdata.page <= 1}
@@ -193,7 +187,7 @@ const GetMonthlyExpense: React.FC = () => {
             Page {formdata.page}
           </button>
           <button
-            disabled={formdata.page === totalPages}
+            disabled={formdata.page === TotalPages}
             onClick={handleNextPage}
             className="join-item btn text-white bg-black hover:border-green-500"
           >

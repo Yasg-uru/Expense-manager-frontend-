@@ -72,6 +72,7 @@ export const GetweeklyExpense = createAsyncThunk(
       return res.data;
     } catch (error) {
       toast.error("failed to fetch your weekly expense ");
+      throw error;
     }
   }
 );
@@ -153,26 +154,69 @@ const ExpenseSlice = createSlice({
       .addCase(GetDailyExpenses.fulfilled, (state, action) => {
         state.ExpenseArray = action.payload?.expenses;
         state.TotalExpenses = action.payload?.TotalExpense;
+        state.isLoading = false;
+      })
+      .addCase(GetDailyExpenses.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(GetDailyExpenses.pending, (state) => {
+        state.isLoading = true;
       })
       .addCase(GetweeklyExpense.fulfilled, (state, action) => {
         state.ExpenseArray = action?.payload?.expenses;
         state.TotalExpenses = action?.payload?.totalExpense;
         state.TotalPages = action?.payload?.totalPages;
+        state.isLoading = false;
+      })
+      .addCase(GetweeklyExpense.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(GetweeklyExpense.rejected, (state) => {
+        state.isLoading = false;
       })
       .addCase(GetGraphweek.fulfilled, (state, action) => {
         state.FullWeekExpense = action?.payload?.Expenses;
+        state.isLoading = false;
       })
+      .addCase(GetGraphweek.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(GetGraphweek.rejected, (state) => {
+        state.isLoading = false;
+      })
+
       .addCase(Getmonthly_Expense.fulfilled, (state, action) => {
         state.ExpenseArray = action?.payload?.expenses;
         state.TotalExpenses = action?.payload?.totalexpense;
         state.TotalPages = action?.payload?.Totalpages;
+        state.isLoading = false;
+      })
+      .addCase(Getmonthly_Expense.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(Getmonthly_Expense.rejected, (state) => {
+        state.isLoading = false;
       })
       .addCase(Getmonthly_Expense_Graph.fulfilled, (state, action) => {
         state.FullWeekExpense = action?.payload?.expenses;
+        state.isLoading = false;
+      })
+      .addCase(Getmonthly_Expense_Graph.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(Getmonthly_Expense_Graph.rejected, (state) => {
+        state.isLoading = false;
       })
       .addCase(GetFullYearReport.fulfilled, (state, action) => {
         state.FullYearExpense = action.payload.yearlyExpensesByDay;
         state.TotalExpenses = action?.payload?.totalExpense;
+        state.isLoading = false;
+      })
+      .addCase(GetFullYearReport.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(GetFullYearReport.pending, (state) => {
+        state.isLoading = true;
       })
       .addCase(Createexpense.fulfilled, (state) => {
         state.isLoading = false;

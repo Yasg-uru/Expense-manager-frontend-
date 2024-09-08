@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { GetweeklyExpense } from "../Redux_toolkit/ExpenseSlice";
-import RootStateInterface from "../interfaces/RootStateInterface";
+
 import toast from "react-hot-toast";
 
 import {
@@ -15,6 +15,7 @@ import {
 } from "chart.js";
 import GetfullweeklyReportByGraph from "./GetfullweeklyReportBygraph";
 import ExpenseCard from "../helpers/ExpenseCard";
+import { useAppSelector } from "@/Redux_toolkit/hooks";
 
 // Register the components with Chart.js
 ChartJS.register(
@@ -33,16 +34,12 @@ const WeeklyExpense: React.FC = () => {
 
   useEffect(() => {
     dispatch(GetweeklyExpense({ week, currentpage }) as any);
-  }, [week, currentpage, dispatch]);
+  }, [week, currentpage]);
 
-  const expenseArray = useSelector<RootStateInterface, any[]>(
-    (state) => state.expense.ExpenseArray
-  );
+  const expenseArray = useAppSelector((state) => state.expense.ExpenseArray);
 
-  const totalPages = useSelector<RootStateInterface, number>(
-    (state) => state.expense.TotalPages
-  );
-  const TotalExpense: any = useSelector<RootStateInterface>(
+  const totalPages = useAppSelector((state) => state.expense.TotalPages);
+  const TotalExpense: any = useAppSelector(
     (state) => state.expense.TotalExpenses
   );
   const handleNextPage = () => {
@@ -63,7 +60,14 @@ const WeeklyExpense: React.FC = () => {
     setWeek(weekNumber);
     setcurrentpage(1);
   };
-
+  // const { isLoading } = useAppSelector((state) => state.expense);
+  // if (isLoading) {
+  //   return (
+  //     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-black p-4 md:p-6">
+  //       <Loader2 className="h-10 w-10 animate-spin" />
+  //     </div>
+  //   );
+  // }
   return (
     <div className="flex flex-col items-center mt-5 gap-2">
       <h1 className="text-center text-green-500 font-bold text-3xl">
@@ -72,50 +76,72 @@ const WeeklyExpense: React.FC = () => {
       <div className="flex flex-col sm:flex-row gap-4 ">
         <button
           onClick={() => handleSubmit(1)}
-          className="btn bg-gradient-to-r from-green-500 to-indigo-500 hover:bg-gradient-to-l text-white font-bold py-2 px-4 rounded-full shadow-md "
+          className={`${
+            week !== 1
+              ? "bg-gradient-to-r from-green-500 to-indigo-500 hover:bg-gradient-to-l"
+              : "bg-gradient-to-r from-red-500 to-orange-500 hover:bg-gradient-to-l"
+          } btn  text-white font-bold py-2 px-4 rounded-full shadow-md `}
         >
           First Week
         </button>
         <button
           onClick={() => handleSubmit(2)}
-          className="btn bg-gradient-to-r from-green-500 to-indigo-500 hover:bg-gradient-to-l text-white font-bold py-2 px-4 rounded-full shadow-md "
+          className={`${
+            week !== 2
+              ? "bg-gradient-to-r from-green-500 to-indigo-500 hover:bg-gradient-to-l"
+              : "bg-gradient-to-r from-red-500 to-orange-500 hover:bg-gradient-to-l"
+          } btn  text-white font-bold py-2 px-4 rounded-full shadow-md `}
         >
           Second Week
         </button>
         <button
           onClick={() => handleSubmit(3)}
-          className="btn bg-gradient-to-r from-green-500 to-indigo-500 hover:bg-gradient-to-l text-white font-bold py-2 px-4 rounded-full shadow-md "
+          className={`${
+            week !== 3
+              ? "bg-gradient-to-r from-green-500 to-indigo-500 hover:bg-gradient-to-l"
+              : "bg-gradient-to-r from-red-500 to-orange-500 hover:bg-gradient-to-l"
+          } btn  text-white font-bold py-2 px-4 rounded-full shadow-md `}
         >
           Third Week
         </button>
       </div>
 
-      <GetfullweeklyReportByGraph week={week} TotalExpense={TotalExpense} />
+      {expenseArray.length > 0 && (
+        <GetfullweeklyReportByGraph week={week} TotalExpense={TotalExpense} />
+      )}
 
       <div className="flex flex-col gap-1">
-        {expenseArray?.map((expense: any) => (
-          <ExpenseCard key={expense._id} expense={expense} />
-        ))}
+        {expenseArray.length > 0 ? (
+          expenseArray.map((expense: any) => (
+            <ExpenseCard key={expense._id} expense={expense} />
+          ))
+        ) : (
+          <p className="text-red-600 font-bold text-md mt-5">
+            No Expense For This Week
+          </p>
+        )}
       </div>
-      <div className="join bg-black border border-green-500">
-        <button
-          disabled={currentpage <= 1}
-          onClick={handlePreviousPage}
-          className="join-item btn text-white bg-black hover:border-green-500"
-        >
-          «
-        </button>
-        <button className="join-item btn text-white bg-black hover:border-green-500">
-          Page {currentpage}
-        </button>
-        <button
-          disabled={currentpage === totalPages}
-          onClick={handleNextPage}
-          className="join-item btn text-white bg-black hover:border-green-500"
-        >
-          »
-        </button>
-      </div>
+      {expenseArray.length > 0 && (
+        <div className="join bg-black border border-green-500">
+          <button
+            disabled={currentpage <= 1}
+            onClick={handlePreviousPage}
+            className="join-item btn text-white bg-black hover:border-green-500"
+          >
+            «
+          </button>
+          <button className="join-item btn text-white bg-black hover:border-green-500">
+            Page {currentpage}
+          </button>
+          <button
+            disabled={currentpage === totalPages}
+            onClick={handleNextPage}
+            className="join-item btn text-white bg-black hover:border-green-500"
+          >
+            »
+          </button>
+        </div>
+      )}
       {/* <div className="flex flex-col justify-center items-center">
         {expenseArray?.length !== 0 && (
           <button

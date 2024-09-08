@@ -2,6 +2,7 @@ import ExpenseCard from "@/helpers/ExpenseCard";
 import { useToast } from "@/hooks/use-toast";
 import { GetDailyExpenses } from "@/Redux_toolkit/ExpenseSlice";
 import { useAppDispatch, useAppSelector } from "@/Redux_toolkit/hooks";
+import { Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 const GetDailyExpense: React.FunctionComponent = () => {
@@ -9,7 +10,7 @@ const GetDailyExpense: React.FunctionComponent = () => {
   const { toast } = useToast();
   const [date, setDate] = useState<Date>(new Date());
 
-  const { ExpenseArray, TotalExpenses } = useAppSelector(
+  const { ExpenseArray, TotalExpenses, isLoading } = useAppSelector(
     (state) => state.expense
   );
 
@@ -52,6 +53,13 @@ const GetDailyExpense: React.FunctionComponent = () => {
       return newDate;
     });
   };
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-black p-4 md:p-6">
+        <Loader2 className="h-10 w-10 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100 dark:bg-black p-4 md:p-6">
