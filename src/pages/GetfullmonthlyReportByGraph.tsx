@@ -49,7 +49,7 @@ const GetfullmonthlyReportByGraph: React.FC<Props> = ({
   };
   return (
     <>
-      <div className="min-h-screen flex flex-col mt-4">
+      <div className="mt-4 flex flex-col ">
         <p className="text-green-500 ">
           Total Expense of {month}th month {year} is ₹{Totalexpense}
         </p>
