@@ -20,7 +20,10 @@ import { Loader2 } from "lucide-react";
 
 const SignupFormSchema = z.object({
   name: z.string().nonempty("Name is required"),
-  email: z.string().email("Invalid email address").nonempty("Email is required"),
+  email: z
+    .string()
+    .email("Invalid email address")
+    .nonempty("Email is required"),
   password: z.string().min(6, "Password must be at least 6 characters long"),
   profileurl: z.any().optional(),
 });

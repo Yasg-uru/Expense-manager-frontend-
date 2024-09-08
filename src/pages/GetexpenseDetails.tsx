@@ -5,12 +5,14 @@ import GetMonthlyExpense from "./GetMonthlyExpense";
 import GetYearlyExpense from "./GetYearlyExpense";
 import GetYearlyExpenseReport from "./GetyearlyExpenseReport";
 import GetDailyExpense from "./GetDailyExpense";
+import HomeWrapper from "./HomeWrapper";
 
 const GetExpenseDetails: React.FC = () => {
   const [choice, setChoice] = useState<string>("daily");
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-black p-4 md:p-6 flex flex-col items-center transition-colors">
+  <HomeWrapper>
+      <div className="min-h-screen bg-gray-100 dark:bg-black p-4 md:p-6 flex flex-col items-center transition-colors">
       {/* Header Section */}
       <h1 className="text-gray-800 dark:text-gray-100 text-2xl md:text-4xl font-bold mb-6 md:mb-10 text-center">
         Expense Tracker
@@ -84,6 +86,7 @@ const GetExpenseDetails: React.FC = () => {
         {choice === "yearly-report" && <GetYearlyExpenseReport />}
       </div>
     </div>
+  </HomeWrapper>
   );
 };
 
