@@ -13,7 +13,7 @@ const initialState: BudgetSliceInterface = {
 };
 export const createBudget = createAsyncThunk(
   "budget/create",
-  async (FormData: CreateBudgetInterface) => {
+  async (FormData: CreateBudgetInterface,{rejectWithValue}) => {
     try {
       const res = await axiosInstance.post("/budget/create", FormData, {
         withCredentials: true,
@@ -21,43 +21,54 @@ export const createBudget = createAsyncThunk(
       toast.success("your budget created successfully");
 
       return res.data;
-    } catch (error) {
-      toast.error("failed to create budget ");
-      throw error;
+    } catch (error:any) {
+      if(error.response && error.response.data && error.response.data.message){
+
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error")
     }
   }
 );
 export const Getbudgets = createAsyncThunk(
   "budget/get",
-  async (page: number) => {
+  async (page: number,{rejectWithValue}) => {
     try {
       const res = await axiosInstance.get(`/budget/Budgets?page=${page}`, {
         withCredentials: true,
       });
       toast.success("fetched your budgets successfully");
       return res.data;
-    } catch (error) {
-      toast.error("failed to fetch your budgets ");
+    } catch (error:any) {
+      if(error.response && error.response.data && error.response.data.message){
+
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error")
     }
   }
 );
 export const DeleteBudget = createAsyncThunk(
   "budget/delete",
-  async (id: string) => {
+  async (id: string,{rejectWithValue}) => {
     try {
       const res = await axiosInstance.delete(`/budget/delete/${id}`, {
         withCredentials: true,
       });
       toast.success("deleted your budget successfully");
       return res.data;
-    } catch (error) {
-      toast.error("failed to delete your budget");
+    } catch (error:any) {
+      if(error.response && error.response.data && error.response.data.message){
+
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error")
     }
   }
 );
 export const UpdateBudget = createAsyncThunk(
   "budget/update",
-  async (formdata: any) => {
+  async (formdata: any,{rejectWithValue}) => {
     try {
       const res = await axiosInstance.put(
         `/budget/update/${formdata._id}`,
@@ -68,14 +79,18 @@ export const UpdateBudget = createAsyncThunk(
       );
       toast.success("updated your budget successfully");
       return res.data;
-    } catch (error) {
-      toast.error("failed to update budget please try again later ");
+    } catch (error:any) {
+      if(error.response && error.response.data && error.response.data.message){
+
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error")
     }
   }
 );
 export const getprogress = createAsyncThunk(
   "budget/progress",
-  async (formdata: { year: number; month: number; category: string }) => {
+  async (formdata: { year: number; month: number; category: string },{rejectWithValue}) => {
     try {
       console.log("this is a formdata:", formdata);
       const res = await axiosInstance.post(`/budget/monthly`, formdata, {
@@ -83,8 +98,12 @@ export const getprogress = createAsyncThunk(
       });
       toast.success("fetched your budget usage successfully");
       return res.data;
-    } catch (error) {
-      toast.error("failed to fetch your budget usage");
+    } catch (error:any) {
+      if(error.response && error.response.data && error.response.data.message){
+
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error")
     }
   }
 );

@@ -53,13 +53,20 @@ export const GetDailyExpenses = createAsyncThunk(
       );
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response.data.message);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error");
     }
   }
 );
 export const GetweeklyExpense = createAsyncThunk(
   "expense/get-weekly",
-  async (FormData: Pagination) => {
+  async (FormData: Pagination, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.get(
         `/expense/prevweek?week=${FormData.week}&page=${FormData.currentpage}`,
@@ -70,15 +77,21 @@ export const GetweeklyExpense = createAsyncThunk(
       );
       toast.success("fetched your weekly Expense successfully");
       return res.data;
-    } catch (error) {
-      toast.error("failed to fetch your weekly expense ");
-      throw error;
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error");
     }
   }
 );
 export const GetGraphweek = createAsyncThunk(
   "expense/getfullweek",
-  async (week: number) => {
+  async (week: number, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.get(
         `/expense/prevweekreport?week=${week}`,
@@ -88,15 +101,22 @@ export const GetGraphweek = createAsyncThunk(
       );
       toast.success("fetched data successfully");
       return res.data;
-    } catch (error) {
-      toast.error("error is occured");
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error");
     }
   }
 );
 
 export const Getmonthly_Expense = createAsyncThunk(
   "expense/monthly",
-  async (formdata: MonthlyInterface) => {
+  async (formdata: MonthlyInterface, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.get(
         `/expense/monthly?page=${formdata.page}&month=${formdata.month}&year=${formdata.year}`,
@@ -106,14 +126,21 @@ export const Getmonthly_Expense = createAsyncThunk(
       );
       toast.success(`fetched data successfully`);
       return res.data;
-    } catch (error) {
-      toast.error("error in fetching monthly data  ");
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error");
     }
   }
 );
 export const Getmonthly_Expense_Graph = createAsyncThunk(
   "expense/monthly/graph",
-  async (FormData: MonthlyExpenseInterfaceGraph) => {
+  async (FormData: MonthlyExpenseInterfaceGraph, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.get(
         `/expense/monthly_graph?year=${FormData.year}&month=${FormData.month}`,
@@ -123,14 +150,21 @@ export const Getmonthly_Expense_Graph = createAsyncThunk(
       );
       toast.success("successfully fetched graph data ");
       return res.data;
-    } catch (error) {
-      toast.error("failed to fetch data ");
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error");
     }
   }
 );
 export const GetFullYearReport = createAsyncThunk(
   "expense/FullyearReport",
-  async (year: number) => {
+  async (year: number, { rejectWithValue }) => {
     try {
       console.log("this is a year from query:", year);
       const res = await axiosInstance.get(`/expense/report?year=${year}`, {
@@ -139,8 +173,15 @@ export const GetFullYearReport = createAsyncThunk(
       toast.success("fetched full year Report");
 
       return res.data;
-    } catch (error) {
-      toast.error("failed to fetch full year report ");
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error");
     }
   }
 );

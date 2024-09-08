@@ -38,7 +38,7 @@ const initialState: User = {
 // );
 export const register = createAsyncThunk(
   "/auth/register",
-  async (formdata: signupinterface) => {
+  async (formdata: signupinterface, { rejectWithValue }) => {
     try {
       const formData = new FormData(); // Create a FormData object
 
@@ -63,24 +63,36 @@ export const register = createAsyncThunk(
 
       toast.success("Your account created successfully");
       return res.data;
-    } catch (error) {
-      toast.error("An error occurred");
-      console.error(error); // Log the error for debugging
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error");
     }
   }
 );
 export const login = createAsyncThunk(
   "/auth/login",
-  async (formdata: LoginInterface,{rejectWithValue}) => {
+  async (formdata: LoginInterface, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.post("/user/login", formdata, {
         withCredentials: true,
       });
       toast.success("Logged In successfully");
       return res.data;
-    } catch (error:any) {
-      toast.error("Error is occured in Login");
-      return rejectWithValue(error.response.data.message);
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error");
     }
   }
 );
@@ -95,27 +107,42 @@ export const Logout = createAsyncThunk("auth/logout", async () => {
     );
     toast.success("logged out successfully");
     return res.data;
-  } catch (error) {
-    toast.error("failed to Logout ");
+  } catch (error: any) {
+    // if(error.response && error.response.data && error.response.data.message){
+
+    //   return rejectWithValue(error.response.data.message);
+    // }
+    // return rejectWithValue("Unkown Error")
+    throw error;
   }
 });
 export const UpdatePassword = createAsyncThunk(
   "/auth/updatepassword",
-  async (formdata: { currentpassword: string; updatepassword: string }) => {
+  async (
+    formdata: { currentpassword: string; updatepassword: string },
+    { rejectWithValue }
+  ) => {
     try {
       const res = axiosInstance.put("/user/updatepassword", formdata, {
         withCredentials: true,
       });
       toast.success("password updated successfully");
       return (await res).data;
-    } catch (error) {
-      toast.error("failed to update password");
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error");
     }
   }
 );
 export const forgotpassword = createAsyncThunk(
   "/user/forgotpassword",
-  async (email: string) => {
+  async (email: string, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.post(
         "/user/forgotpassword",
@@ -128,14 +155,24 @@ export const forgotpassword = createAsyncThunk(
       );
       toast.success("mail sent successfully");
       return res.data;
-    } catch (error) {
-      toast.error("failed to sent mail ");
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error");
     }
   }
 );
 export const ResetPassword = createAsyncThunk(
   "/user/reset",
-  async (formdata: { token: string | undefined; Password: string }) => {
+  async (
+    formdata: { token: string | undefined; Password: string },
+    { rejectWithValue }
+  ) => {
     try {
       const res = await axiosInstance.post(
         `/user/resetpassword/${formdata.token}`,
@@ -148,14 +185,21 @@ export const ResetPassword = createAsyncThunk(
       );
       toast.success("reset password successfully");
       return res.data;
-    } catch (error) {
-      toast.error("failed to reset password");
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error");
     }
   }
 );
 export const Profilechange = createAsyncThunk(
   "auth/profilechange",
-  async (profileurl: File) => {
+  async (profileurl: File, { rejectWithValue }) => {
     try {
       const Formdata = new FormData();
       Formdata.append("profileurl", profileurl);
@@ -165,8 +209,15 @@ export const Profilechange = createAsyncThunk(
       });
       toast.success("changed your profile successfully");
       return res.data;
-    } catch (error) {
-      toast.error("failed to change profile picture ");
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error");
     }
   }
 );
@@ -178,12 +229,12 @@ export const DeleteAccount = createAsyncThunk("user/delete", async () => {
     toast.success("Your Account deleted successfully");
     return res.data;
   } catch (error) {
-    toast.error("failed to delete Account");
+    throw error;
   }
 });
 export const UpdateProfile = createAsyncThunk(
   "/user/update",
-  async (name: string) => {
+  async (name: string, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.put(
         "/user/update",
@@ -196,8 +247,15 @@ export const UpdateProfile = createAsyncThunk(
       );
       toast.success("updated your profile successfully");
       return res.data;
-    } catch (error) {
-      toast.error("failed to update profile");
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("Unkown Error");
     }
   }
 );
@@ -209,7 +267,7 @@ export const GetUserInfo = createAsyncThunk("/user/getinfo", async () => {
     toast.success("successfully fecthed users data ");
     return res.data;
   } catch (error) {
-    toast.error("failed to fecth users data ");
+    throw error;
   }
 });
 const AuthSlice = createSlice({
@@ -253,15 +311,13 @@ const AuthSlice = createSlice({
         state.imageurl = action?.payload?.user?.profileurl;
         state.email = action?.payload?.user?.email;
         state.name = action?.payload?.user?.name;
-        state.isLoading=false;
+        state.isLoading = false;
       })
-      .addCase(login.pending,(state)=>{
-        state.isLoading=true;
-
+      .addCase(login.pending, (state) => {
+        state.isLoading = true;
       })
-      .addCase(login.rejected,(state)=>{
-        state.isLoading=false;
-
+      .addCase(login.rejected, (state) => {
+        state.isLoading = false;
       })
 
       .addCase(Profilechange.fulfilled, (state, action) => {
