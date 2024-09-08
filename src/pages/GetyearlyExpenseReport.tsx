@@ -1,29 +1,42 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { GetFullYearReport } from "../Redux_toolkit/ExpenseSlice";
-import RootStateInterface from "../interfaces/RootStateInterface";
+
 import { Chart as ChartJS, ArcElement, Tooltip, ChartOptions } from "chart.js";
 import { Pie, Bar } from "react-chartjs-2";
-ChartJS.register(ArcElement, Tooltip);
-const GetYearlyExpenseReport: React.FC = () => {
-  const dispatch = useDispatch();
-  const [isopen, setisopen] = useState<boolean>(false);
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useAppSelector } from "@/Redux_toolkit/hooks";
 
-  const currentyear = new Date();
-  const [year, setyear] = useState<number>(currentyear.getFullYear());
-  // const [choice, setChoice] = useState<"Pie" | "Bar" | "default">("default");
-  const toggleOpen = () => {
-    setisopen(!isopen);
-  };
-  const handlesubmit = () => {
+ChartJS.register(ArcElement, Tooltip);
+const date = new Date();
+const currentYear: number = date.getFullYear();
+const years = Array.from({ length: 10 }, (_, i) => currentYear - i).map(
+  (year) => ({
+    value: year,
+    label: year.toString(),
+  })
+);
+
+const GetYearlyExpenseReport: React.FC = () => {
+  const [year, setYear] = useState<number>(new Date().getFullYear());
+  useEffect(() => {
     dispatch(GetFullYearReport(year) as any);
+  }, [year]);
+  const dispatch = useDispatch();
+
+  const handleYearChange = (value: string) => {
+    setYear(parseInt(value));
   };
-  const handlechage = (event: any) => {
-    const value = event.target.value;
-    const Year = parseInt(value);
-    setyear(Year);
-  };
-  const yearlyExpensesByDay = useSelector<RootStateInterface>(
+
+  const yearlyExpensesByDay = useAppSelector(
     (state) => state.expense.FullYearExpense
   );
 
@@ -77,8 +90,10 @@ const GetYearlyExpenseReport: React.FC = () => {
       },
     ],
   };
+
   const width = 3000,
     height = 3000;
+
   interface MyPieChartOptions extends ChartOptions<"pie"> {
     height: number;
     width: number;
@@ -86,59 +101,54 @@ const GetYearlyExpenseReport: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center mt-5">
-      <h1 className="text-green-500 font-bold text-3xl">Full Year Report</h1>
-      <button
-        onClick={toggleOpen}
-        className="btn w-full bg-gradient-to-r from-green-500 to-indigo-500 hover:bg-gradient-to-l text-white font-bold py-2 px-4 rounded-full shadow-md"
-      >
-        {isopen ? "Close Year Input" : "Enter Year"}
-      </button>
-      {isopen && (
-        <div className="flex gap-2 items-center">
-          <div className="flex flex-col gap-2 w-full">
-            <label htmlFor="year" className="text-lg text-gray-300">
-              Year
-            </label>
+      <h1 className="text-green-500 font-bold text-3xl mb-2">
+        Full Year Report
+      </h1>
 
-            <div className="flex gap-2">
-              <input
-                type="number"
-                name="year"
-                value={year}
-                onChange={handlechage}
-                placeholder="Enter Year"
-                className="border w-[15vw] text-white border-gray-700 rounded-md bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
-                required
-              />
-              <button
-                onClick={handlesubmit}
-                className="btn w-full bg-gradient-to-r from-green-500 to-indigo-500 hover:bg-gradient-to-l text-white font-bold py-2 px-4 rounded-full shadow-md"
-              >
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      <div className="flex justify-center text-white w-full"></div>
-      <h1 className="text-red-500 underline font-bold text-3xl mt-3">
-        Bar Chart Of Your Expense
-      </h1>
-      <Bar data={chartData} className="mt-10" />
-      <h1 className="text-red-500 underline font-bold text-3xl mt-10">
-        Pie Chart Of Your Expense
-      </h1>
-      <Pie
-        data={chartData}
-        className="mt-2"
-        options={
-          {
-            height,
-            width,
-          } as MyPieChartOptions
-        }
-      />
+      <div className="flex items-center  gap-2 w-full max-w-xs">
+        <Select onValueChange={handleYearChange} defaultValue={year.toString()}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select a year" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Year</SelectLabel>
+              {years.map((year) => (
+                <SelectItem key={year.value} value={year.value.toString()}>
+                  {year.label}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="flex justify-center text-white w-full mt-10">
+        <h1 className="text-red-500 underline font-bold text-3xl">
+          Bar Chart Of Your Expenses
+        </h1>
+        <Bar
+          data={chartData}
+          className="mt-10 w-[80vw] md:w-[60vw] lg:w-[50vw]"
+        />
+      </div>
+      <div className="flex justify-center text-white w-full mt-10">
+        <h1 className="text-red-500 underline font-bold text-3xl">
+          Pie Chart Of Your Expenses
+        </h1>
+        <Pie
+          data={chartData}
+          className="mt-2 w-[80vw] md:w-[60vw] lg:w-[50vw]"
+          options={
+            {
+              height,
+              width,
+            } as MyPieChartOptions
+          }
+        />
+      </div>
     </div>
   );
 };
+
 export default GetYearlyExpenseReport;

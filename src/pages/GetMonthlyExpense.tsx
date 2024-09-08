@@ -24,7 +24,7 @@ const GetMonthlyExpense: React.FC = () => {
 
   const [formdata, setFormdata] = useState<MonthlyInterface>({
     year: currentYear,
-    month: 1,
+    month: date.getMonth() + 1,
     page: 1,
   });
   // const [showGraph, setShowGraph] = useState<boolean>(false);
@@ -116,7 +116,7 @@ const GetMonthlyExpense: React.FC = () => {
         className="w-full flex flex-col sm:flex-row items-center bg-gray-700 shadow-2xl shadow-gray-500 gap-4 px-4 sm:px-10 rounded-lg"
       >
         <div className="flex flex-col gap-2 w-full sm:w-auto">
-          <Select onValueChange={handleMonthChange}>
+          <Select onValueChange={handleMonthChange} defaultValue={formdata.month.toString()}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a month" />
             </SelectTrigger>
@@ -134,7 +134,7 @@ const GetMonthlyExpense: React.FC = () => {
         </div>
 
         <div className="flex flex-col gap-2 w-full sm:w-auto">
-          <Select onValueChange={handleYearChange}>
+          <Select onValueChange={handleYearChange} defaultValue={formdata.year.toString()}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a year" />
             </SelectTrigger>
@@ -160,11 +160,13 @@ const GetMonthlyExpense: React.FC = () => {
           </Button>
         </div>
       </form>
-      {expenseArray.length>0 && <GetfullmonthlyReportByGraph
-        month={formdata.month}
-        year={formdata.year}
-        Totalexpense={TotalExpense}
-      />}
+      {expenseArray.length > 0 && (
+        <GetfullmonthlyReportByGraph
+          month={formdata.month}
+          year={formdata.year}
+          Totalexpense={TotalExpense}
+        />
+      )}
 
       <div className="flex mt-12 flex-col gap-1 w-full">
         {expenseArray.length > 0 ? (
