@@ -1,7 +1,7 @@
+
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { GetFullYearReport } from "../Redux_toolkit/ExpenseSlice";
-
 import { Chart as ChartJS, ArcElement, Tooltip, ChartOptions } from "chart.js";
 import { Pie, Bar } from "react-chartjs-2";
 import {
@@ -16,6 +16,7 @@ import {
 import { useAppSelector } from "@/Redux_toolkit/hooks";
 
 ChartJS.register(ArcElement, Tooltip);
+
 const date = new Date();
 const currentYear: number = date.getFullYear();
 const years = Array.from({ length: 10 }, (_, i) => currentYear - i).map(
@@ -27,10 +28,11 @@ const years = Array.from({ length: 10 }, (_, i) => currentYear - i).map(
 
 const GetYearlyExpenseReport: React.FC = () => {
   const [year, setYear] = useState<number>(new Date().getFullYear());
+  const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(GetFullYearReport(year) as any);
   }, [year]);
-  const dispatch = useDispatch();
 
   const handleYearChange = (value: string) => {
     setYear(parseInt(value));
@@ -100,12 +102,13 @@ const GetYearlyExpenseReport: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center mt-5">
-      <h1 className="text-green-500 font-bold text-3xl mb-2">
+    <div className="flex flex-col items-center mt-5 px-4">
+      <h1 className="text-green-500 font-bold text-2xl sm:text-3xl mb-2">
         Full Year Report
       </h1>
 
-      <div className="flex items-center  gap-2 w-full max-w-xs">
+      {/* Year selector */}
+      <div className="flex items-center gap-2 w-full max-w-xs">
         <Select onValueChange={handleYearChange} defaultValue={year.toString()}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select a year" />
@@ -123,22 +126,25 @@ const GetYearlyExpenseReport: React.FC = () => {
         </Select>
       </div>
 
-      <div className="flex justify-center text-white w-full mt-10">
-        <h1 className="text-red-500 underline font-bold text-3xl">
+      {/* Bar chart */}
+      <div className="flex flex-col items-center w-full mt-10">
+        <h1 className="text-red-500 underline font-bold text-2xl sm:text-3xl">
           Bar Chart Of Your Expenses
         </h1>
         <Bar
           data={chartData}
-          className="mt-10 w-[80vw] md:w-[60vw] lg:w-[50vw]"
+          className="mt-4 w-[95vw] sm:w-[80vw] md:w-[60vw] lg:w-[50vw]"
         />
       </div>
-      <div className="flex justify-center text-white w-full mt-10">
-        <h1 className="text-red-500 underline font-bold text-3xl">
+
+      {/* Pie chart */}
+      <div className="flex flex-col items-center w-full mt-10">
+        <h1 className="text-red-500 underline font-bold text-2xl sm:text-3xl">
           Pie Chart Of Your Expenses
         </h1>
         <Pie
           data={chartData}
-          className="mt-2 w-[80vw] md:w-[60vw] lg:w-[50vw]"
+          className="mt-4 w-[95vw] sm:w-[80vw] md:w-[60vw] lg:w-[50vw]"
           options={
             {
               height,
