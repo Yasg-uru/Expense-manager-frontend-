@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Logout } from "../Redux_toolkit/AuthSlice";
 import ModeToggle from "@/components/mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CreditCard, LogOut, Settings, User } from "lucide-react";
+import { CreditCard, LogIn, LogOut, Settings, User } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/Redux_toolkit/hooks";
 import { Button } from "@/components/ui/button";
 import {
@@ -174,6 +174,20 @@ const Navbar: React.FC = () => {
             <RiProgress1Line className="h-6 w-6" />
             <span className="text-xs">Budgets</span>
           </Link>
+          {isLoggedin ? (
+            <div className="flex flex-col items-center text-gray-600 dark:text-gray-300">
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>{isLoading ? "Logging out..." : "Log out"}</span>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="flex flex-col items-center text-gray-600 dark:text-gray-300"
+            >
+              <LogIn className="h-6 w-6" />
+              <span className="text-xs">Login</span>
+            </Link>
+          )}
           {ModeToggle({})}
         </div>
       )}
