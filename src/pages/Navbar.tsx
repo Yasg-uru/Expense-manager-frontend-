@@ -328,7 +328,7 @@ const Navbar: React.FC = () => {
         </div>
       ) : (
         // Mobile Tab Bar
-        <div className="fixed bottom-0 w-full bg-gray-200 dark:bg-gray-800 flex justify-around py-2 shadow-lg">
+        <div className="fixed bottom-0 w-full bg-gray-200 dark:bg-gray-800 flex justify-around py-2 shadow-lg z-50">
           <Link
             to="/"
             className="flex flex-col items-center text-gray-600 dark:text-gray-300"
