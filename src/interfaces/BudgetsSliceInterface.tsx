@@ -16,4 +16,5 @@ export default interface BudgetSliceInterface {
   RemainingBudget:number;
   PercentageUsage:number;
   isLoading:boolean;
+  ProgressLoading:boolean;
 }

@@ -264,7 +264,7 @@
 // };
 
 // export default GetBudgets;
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import {
   DeleteBudget,
@@ -272,7 +272,7 @@ import {
   UpdateBudget,
   getprogress,
 } from "../Redux_toolkit/BudgetSlice";
-import RootStateInterface from "../interfaces/RootStateInterface";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -285,6 +285,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useAppSelector } from "@/Redux_toolkit/hooks";
+import { Loader2 } from "lucide-react";
 
 const GetBudgets: React.FC = () => {
   const [page, setPage] = useState<number>(1);
@@ -297,13 +299,6 @@ const GetBudgets: React.FC = () => {
   useEffect(() => {
     dispatch(Getbudgets(page) as any);
   }, [dispatch, page]);
-
-  const Totalpages = useSelector<RootStateInterface>(
-    (state) => state.budget.Totalpages
-  );
-  const BudgetArray: any = useSelector<RootStateInterface>(
-    (state) => state.budget.BudgetArray
-  );
 
   const handlePreviousPage = () => {
     setPage(page - 1);
@@ -361,15 +356,23 @@ const GetBudgets: React.FC = () => {
     }));
   }
 
-  const RemainingBudget = useSelector<RootStateInterface>(
-    (state) => state.budget.RemainingBudget
-  ) as number;
-  const PercentageUsage = useSelector<RootStateInterface>(
-    (state) => state.budget.PercentageUsage
-  ) as number;
-
+  const {
+    PercentageUsage,
+    RemainingBudget,
+    isLoading,
+    ProgressLoading,
+    BudgetArray,
+    Totalpages,
+  } = useAppSelector((state) => state.budget);
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-black p-4 md:p-6">
+        <Loader2 className="h-10 w-10 animate-spin" />
+      </div>
+    );
+  }
   return (
-    <div className="min-h-screen flex flex-col p-4 items-center w-full bg-gray-100 dark:bg-gray-900">
+    <div className="min-h-screen flex flex-col p-4 items-center w-full bg-gray-100 dark:bg-black">
       <h1 className="text-center text-2xl font-bold text-green-500 mb-4">
         Get Your Budgets
       </h1>
@@ -379,7 +382,7 @@ const GetBudgets: React.FC = () => {
           BudgetArray.map((budget: any) => (
             <Card
               key={budget._id}
-              className="relative bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-black rounded-lg overflow-hidden"
+              className="relative bg-white dark:bg-black text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-black rounded-lg overflow-hidden"
             >
               <CardHeader>
                 <CardTitle>{budget.category}</CardTitle>
@@ -391,20 +394,20 @@ const GetBudgets: React.FC = () => {
                         name="category"
                         value={editedBudget.category}
                         onChange={handleInputChange}
-                        className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded"
+                        className="bg-gray-200 dark:bg-black text-gray-900 dark:text-gray-100 p-2 rounded"
                       />
                       <input
                         type="number"
                         name="limit"
                         value={editedBudget.limit}
                         onChange={handleInputChange}
-                        className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded"
+                        className="bg-gray-200 dark:bg-black text-gray-900 dark:text-gray-100 p-2 rounded"
                       />
                       <select
                         name="month"
                         value={editedBudget.month || ""}
                         onChange={handleInputChange}
-                        className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded"
+                        className="bg-gray-200 dark:bg-black text-gray-900 dark:text-gray-100 p-2 rounded"
                       >
                         <option value="" disabled>
                           Select a month
@@ -420,7 +423,7 @@ const GetBudgets: React.FC = () => {
                         name="year"
                         value={editedBudget.year}
                         onChange={handleInputChange}
-                        className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded"
+                        className="bg-gray-200 dark:bg-black text-gray-900 dark:text-gray-100 p-2 rounded"
                       />
                     </div>
                   ) : (
@@ -439,38 +442,54 @@ const GetBudgets: React.FC = () => {
                 </CardDescription>
               </CardHeader>
               {ProgressCard === budget._id ? (
-                <CardContent className="relative flex flex-col items-center justify-center">
-                  <Button
-                    className="absolute left-2 bg-red-500 dark:bg-red-700 text-white dark:text-gray-100 font-bold rounded-full"
-                    onClick={() => setProgressCard(null)}
-                  >
-                    {"<<"} Back
-                  </Button>
-                  <p className="text-red-500 dark:text-red-300 font-bold">
-                    Limit: {budget.limit}
-                  </p>
-                  <p className="text-green-500 dark:text-green-300 font-bold">
-                    Remaining Budget: {RemainingBudget}
-                  </p>
-                  <div className="h-28 w-28 mt-4">
-                    <CircularProgressbar
-                      value={PercentageUsage}
-                      text={`${PercentageUsage}%`}
-                      styles={{
-                        path: {
-                          stroke: "#4caf50",
-                        },
-                        text: {
-                          fill: "#4caf50",
-                          fontSize: "16px",
-                        },
-                        trail: {
-                          stroke: "#d6d6d6",
-                        },
-                      }}
-                    />
+                ProgressLoading ? (
+                  <div className="relative flex flex-col items-center justify-center p-4 bg-white dark:bg-black rounded-lg shadow-lg">
+                    {/* Back button skeleton */}
+                    <Skeleton className="absolute left-2 h-8 w-24 rounded-full" />
+
+                    {/* Limit skeleton */}
+                    <Skeleton className="h-4 w-36 mt-4" />
+
+                    {/* Remaining Budget skeleton */}
+                    <Skeleton className="h-4 w-36 mt-2" />
+
+                    {/* Circular progress skeleton */}
+                    <Skeleton className="h-28 w-28 mt-4 rounded-full" />
                   </div>
-                </CardContent>
+                ) : (
+                  <CardContent className="relative flex flex-col items-center justify-center">
+                    <Button
+                      className="absolute left-2 bg-red-500 dark:bg-red-700 text-white dark:text-gray-100 font-bold rounded-full"
+                      onClick={() => setProgressCard(null)}
+                    >
+                      {"<<"} Back
+                    </Button>
+                    <p className="text-red-500 dark:text-red-300 font-bold">
+                      Limit: {budget.limit}
+                    </p>
+                    <p className="text-green-500 dark:text-green-300 font-bold">
+                      Remaining Budget: {RemainingBudget}
+                    </p>
+                    <div className="h-28 w-28 mt-4">
+                      <CircularProgressbar
+                        value={PercentageUsage}
+                        text={`${PercentageUsage}%`}
+                        styles={{
+                          path: {
+                            stroke: "#4caf50",
+                          },
+                          text: {
+                            fill: "#4caf50",
+                            fontSize: "16px",
+                          },
+                          trail: {
+                            stroke: "#d6d6d6",
+                          },
+                        }}
+                      />
+                    </div>
+                  </CardContent>
+                )
               ) : null}
               <CardFooter className="flex justify-between">
                 {ProgressCard !== budget._id && (
@@ -515,17 +534,17 @@ const GetBudgets: React.FC = () => {
           <Button
             onClick={handlePreviousPage}
             disabled={page <= 1}
-            className="bg-gray-800 dark:bg-gray-700 text-white px-4 py-2 rounded-l"
+            className="bg-gray-800 dark:bg-black text-white px-4 py-2 rounded-l"
           >
             «
           </Button>
-          <Button className="bg-gray-800 dark:bg-gray-700 text-white px-4 py-2">
+          <Button className="bg-gray-800 dark:bg-black text-white px-4 py-2">
             Page {page}
           </Button>
           <Button
             onClick={handleNextPage}
             disabled={page === Totalpages}
-            className="bg-gray-800 dark:bg-gray-700 text-white px-4 py-2 rounded-r"
+            className="bg-gray-800 dark:bg-black text-white px-4 py-2 rounded-r"
           >
             »
           </Button>

@@ -9,6 +9,7 @@ const initialState: BudgetSliceInterface = {
   RemainingBudget: 0,
   PercentageUsage: 0,
   isLoading: false,
+  ProgressLoading: false
 };
 export const createBudget = createAsyncThunk(
   "budget/create",
@@ -96,10 +97,24 @@ const BudgetSlice = createSlice({
       .addCase(Getbudgets.fulfilled, (state, action) => {
         state.BudgetArray = action?.payload?.Budgets;
         state.Totalpages = action?.payload?.Totalpages;
+        state.isLoading = false;
+      })
+      .addCase(Getbudgets.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(Getbudgets.rejected, (state) => {
+        state.isLoading = false;
       })
       .addCase(getprogress.fulfilled, (state, action) => {
         state.RemainingBudget = action?.payload?.remainingbudget;
         state.PercentageUsage = action?.payload?.percentageUsage;
+        state.ProgressLoading = false;
+      })
+      .addCase(getprogress.pending, (state) => {
+        state.ProgressLoading = true;
+      })
+      .addCase(getprogress.rejected, (state) => {
+        state.ProgressLoading = false;
       })
       .addCase(createBudget.fulfilled, (state) => {
         state.isLoading = false;
