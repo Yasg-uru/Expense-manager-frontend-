@@ -184,7 +184,7 @@ const GetBudgets: React.FC = () => {
                 ProgressLoading ? (
                   <div className="relative flex flex-col items-center justify-center p-4 bg-white dark:bg-black rounded-lg shadow-lg">
                     {/* Back button skeleton */}
-                    <p className="font-bold text-white text-xl ">...Loading</p>
+                    <p className="font-bold text-black dark:text-white text-xl ">...Loading</p>
                     <Skeleton className="absolute left-2 h-8 w-24 rounded-full" />
 
                     {/* Limit skeleton */}
@@ -213,7 +213,7 @@ const GetBudgets: React.FC = () => {
                     <div className="h-28 w-28 mt-4">
                       <CircularProgressbar
                         value={PercentageUsage}
-                        text={`${PercentageUsage}%`}
+                        text={`${Math.floor(PercentageUsage)}%`}
                         styles={{
                           path: {
                             stroke: "#4caf50",
@@ -269,7 +269,7 @@ const GetBudgets: React.FC = () => {
             </Card>
           ))}
       </div>
-      {ProgressCard !== null && (
+      {ProgressCard !== null && BudgetArray.length>10 && (
         <div className="mt-4 border border-green-500 flex justify-center">
           <Button
             onClick={handlePreviousPage}
