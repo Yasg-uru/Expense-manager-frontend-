@@ -12,6 +12,7 @@ import ResetPasswordForm from "./pages/ResetPasswordForm";
 import ProtectedHelper from "./helpers/ProtectedHelper";
 import ProfileInfo from "./pages/ProfileInfo";
 import Navbar from "./pages/Navbar";
+import ForgotPassword from "./pages/ForgotPassword";
 function App() {
   return (
     <>
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         {/* <Route path="/" element={<Home />} /> */}
         <Route path="/register" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
         <Route path="/login" element={<Login />} />
         <Route element={<ProtectedHelper allowedrole={["user", "admin"]} />}>
