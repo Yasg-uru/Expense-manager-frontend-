@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User } from "../interfaces/AuthSlice";
 
 import toast from "react-hot-toast";
-import signupinterface from "../interfaces/AuthenticationInterface";
+
 import LoginInterface from "../interfaces/LoginInterface";
 import axiosInstance from "../helpers/axiosinstance";
 const isValidRole = (role: any): role is "" | "admin" | "user" => {
@@ -17,53 +17,22 @@ const initialState: User = {
   name: localStorage.getItem("name") || "",
   isLoading: false,
 };
-// export const register = createAsyncThunk(
-//   "/auth/register",
-//   async (formdata: signupinterface) => {
-//     try {
-//       console.log('this is a formdata ',formdata)
-//       const res = await axios.post(
-//         `http://localhost:8000/user/register`,
-//         formdata,
-//         {
-//           withCredentials: true,
-//         }
-//       );
-//       toast.success("your account created successfully");
-//       return res.data;
-//     } catch (error) {
-//       toast.error("error is occured");
-//     }
-//   }
-// );
+
 export const register = createAsyncThunk(
   "/auth/register",
-  async (formdata: signupinterface, { rejectWithValue }) => {
+  async (formdata: FormData, { rejectWithValue }) => {
     try {
-      const formData = new FormData(); // Create a FormData object
-
-      // Add each form data property to the FormData object
-      for (const key in formdata) {
-        formData.append(key, formdata[key]);
-      }
-
-      // Optionally add files (if your signup form includes file uploads):
-      if (formdata.file) {
-        // Assuming you have a 'file' property for uploads
-        formData.append("profileurl", formdata.file, formdata.file.name); // Add file data
-      }
-
-      const res = await axiosInstance.post(`/user/register`, formData, {
+      const res = await axiosInstance.post(`/user/register`, formdata, {
         withCredentials: true,
         headers: {
-          // Set appropriate headers for multipart form data (optional)
-          "Content-Type": `multipart/form-data;`, // Set Content-Type header with boundary
+          "Content-Type": `multipart/form-data;`,
         },
       });
 
       toast.success("Your account created successfully");
       return res.data;
     } catch (error: any) {
+      console.log("this is error in registering :", error);
       if (
         error.response &&
         error.response.data &&

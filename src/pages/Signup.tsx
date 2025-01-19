@@ -54,7 +54,7 @@ const Signup: React.FC = () => {
       formData.append("profileurl", data.profileurl as Blob);
     }
 
-    dispatch(register(formData as any))
+    dispatch(register(formData))
       .unwrap()
       .then(() => {
         navigate("/");
