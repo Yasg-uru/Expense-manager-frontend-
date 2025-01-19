@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Logout } from "../Redux_toolkit/AuthSlice";
 import ModeToggle from "@/components/mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CreditCard, LogIn, LogOut, Settings, User } from "lucide-react";
+import { CreditCard, LogIn, LogOut,  User } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/Redux_toolkit/hooks";
 import { Button } from "@/components/ui/button";
 import {
@@ -124,12 +124,6 @@ const Navbar: React.FC = () => {
                   <DropdownMenuGroup>
                     <DropdownMenuItem>
                       <User className="mr-2 h-4 w-4" /> Profile
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <CreditCard className="mr-2 h-4 w-4" /> My Courses
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Settings className="mr-2 h-4 w-4" /> Settings
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuItem onClick={handleLogout}>
