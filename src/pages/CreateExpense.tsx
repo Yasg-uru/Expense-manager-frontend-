@@ -16,6 +16,7 @@ const CreateExpense: React.FC = () => {
     currency: "",
   });
   const [showOtherCategory, setShowOtherCategory] = useState<boolean>(false);
+  const [otherCategory, setOtherCategory] = useState<string>("");
 
   const handleChange = (
     event: React.ChangeEvent<
@@ -23,15 +24,25 @@ const CreateExpense: React.FC = () => {
     >
   ) => {
     const { name, value } = event.target;
-    if (name === "category" && value === "Other") {
-      setShowOtherCategory(true);
+
+    if (name === "category") {
+      if (value === "Other") {
+        setShowOtherCategory(true);
+        setFormdata({ ...formData, category: "" }); // Reset category when "Other" is selected
+      } else {
+        setShowOtherCategory(false);
+        setFormdata({ ...formData, category: value });
+      }
     } else {
-      setShowOtherCategory(false);
-      setFormdata({
-        ...formData,
-        [name]: value,
-      });
+      setFormdata({ ...formData, [name]: value });
     }
+  };
+
+  const handleOtherCategoryChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setOtherCategory(event.target.value);
+    setFormdata({ ...formData, category: event.target.value }); // Keep category updated
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -45,6 +56,8 @@ const CreateExpense: React.FC = () => {
       recurring: false,
       currency: "",
     });
+    setShowOtherCategory(false);
+    setOtherCategory("");
   };
 
   return (
@@ -80,7 +93,7 @@ const CreateExpense: React.FC = () => {
           <select
             id="category"
             name="category"
-            value={formData.category}
+            value={showOtherCategory ? "Other" : formData.category}
             onChange={handleChange}
             className="border w-full border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
           >
@@ -92,6 +105,7 @@ const CreateExpense: React.FC = () => {
             <option value="Other">Other</option>
           </select>
         </div>
+
         {showOtherCategory && (
           <div className="flex flex-col gap-2 w-full">
             <label htmlFor="anothercategory" className="text-lg">
@@ -101,8 +115,8 @@ const CreateExpense: React.FC = () => {
               type="text"
               id="anothercategory"
               name="category"
-              value={formData.category}
-              onChange={handleChange}
+              value={otherCategory}
+              onChange={handleOtherCategoryChange}
               placeholder="Enter the category"
               className="border w-full border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-black px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
               required
